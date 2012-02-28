@@ -7,9 +7,9 @@ Gem::Specification.new do |s|
   s.version     = Sketch::VERSION
   s.authors     = ["Brandon Fosdick"]
   s.email       = ["bfoz@bfoz.net"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.homepage    = "http://github.com/bfoz/sketch"
+  s.summary     = %q{2D mechanical sketches}
+  s.description = %q{Sketches used in the creation of mechanical designs}
 
   s.rubyforge_project = "sketch"
 
