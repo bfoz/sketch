@@ -4,7 +4,7 @@ require "sketch/version"
 
 Gem::Specification.new do |s|
   s.name        = "sketch"
-  s.version     = Sketch::VERSION
+  s.version     = '0'
   s.authors     = ["Brandon Fosdick"]
   s.email       = ["bfoz@bfoz.net"]
   s.homepage    = "http://github.com/bfoz/sketch"
