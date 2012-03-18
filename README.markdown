@@ -4,7 +4,7 @@ Sketching with Ruby
 Classes and methods for programmatically creating, manipulating, and exporting 
 simple geometric drawings. This gem is primarily intended to support mechanical
 design generation, but it can also handle the doodling that you used to do in 
-your notebook while stuck in a boring class.
+your notebook while stuck in that really boring class (you know the one).
 
 At its most basic, Sketch is a container for Geometry objects. The classes in 
 this gem are based on the classes provided by the Geometry gem, but have some 
