@@ -1,5 +1,6 @@
 require 'geometry'
 require_relative 'sketch/point.rb'
+require_relative 'sketch/polygon'
 
 =begin
 A Sketch is a container for Geometry objects.
