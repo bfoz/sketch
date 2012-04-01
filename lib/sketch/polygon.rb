@@ -80,6 +80,11 @@ The same thing, but more succint:
 	    vertex(point)
 	end
 
+	# Draw a vertical line to the given y-coordinate while preserving the x-coordinate
+	def move_vertical_to(y)
+	    vertex [last_point.x,y]
+	end
+
 	# Turn left by the given number of degrees
 	def turn_left(angle)
 	    @direction += angle if @direction
@@ -116,8 +121,8 @@ The same thing, but more succint:
 	end
 
 	# @endgroup
-    private
 
+    private
 	def last_point
 	    @elements.last.is_a?(Edge) ? @elements.last.last : @elements.last
 	end
