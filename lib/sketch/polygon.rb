@@ -122,16 +122,4 @@ The same thing, but more succint:
 	    @elements.last.is_a?(Edge) ? @elements.last.last : @elements.last
 	end
     end
-
-    # Create a Polygon with the given vertices, or using a block.
-    # See {PolygonBuilder}
-    def polygon(*args, &block)
-	if block_given?
-	    @elements.push PolygonBuilder.new.evaluate(&block)
-	    @elements.last
-	else
-	    @elements.push Polygon.new(*args)
-	    @elements.last
-	end
-    end
 end
