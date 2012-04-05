@@ -4,11 +4,11 @@ require_relative '../../lib/sketch/polygon'
 
 class SketchPolygonBuilderTest < Test::Unit::TestCase
     Point = Geometry::Point
-    
+
     def setup
 	@builder = Sketch::PolygonBuilder.new
     end
-    
+
     must "build a polygon with a block" do
 	polygon = @builder.evaluate do
 	end
@@ -62,5 +62,16 @@ class SketchPolygonBuilderTest < Test::Unit::TestCase
 	assert_kind_of(Sketch::Point, @builder.elements[0])
 	assert_kind_of(Sketch::Point, @builder.elements[1])
 	assert_equal(Point[0,2], @builder.elements[1])
+    end
+
+    must "have a move_horizontal_to command that makes a new vertex with the same y-coordinate as the previous one" do
+	polygon = @builder.evaluate do
+	    start_at		[0,0]
+	    move_horizontal_to	2
+	end
+	assert_equal(2, @builder.elements.length)
+	assert_kind_of(Sketch::Point, @builder.elements[0])
+	assert_kind_of(Sketch::Point, @builder.elements[1])
+	assert_equal(Point[2,0], @builder.elements[1])
     end
 end

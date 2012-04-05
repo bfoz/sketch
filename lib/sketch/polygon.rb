@@ -31,7 +31,7 @@ The same thing, but more succint:
 =end
     class PolygonBuilder
 	attr_reader :elements
-	
+
 	Edge = Geometry::Edge
 
 	def initialize
@@ -80,9 +80,16 @@ The same thing, but more succint:
 	    vertex(point)
 	end
 
-	# Draw a vertical line to the given y-coordinate while preserving the x-coordinate
+	# Draw a vertical line to the given y-coordinate while preserving the
+	# x-coordinate of the previous point
 	def move_vertical_to(y)
-	    vertex [last_point.x,y]
+	    vertex [last_point.x, y]
+	end
+
+	# Draw a horizontal line to the given x-coordinate while preserving the
+	# y-coordinate of the previous point
+	def move_horizontal_to(x)
+	    vertex [x, last_point.y]
 	end
 
 	# Turn left by the given number of degrees
