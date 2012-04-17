@@ -80,6 +80,16 @@ The same thing, but more succint:
 	    vertex(point)
 	end
 
+	# Move the specified distance along the X axis
+	def move_x(distance)
+	    vertex last_point + Point[distance, 0]
+	end
+
+	# Move the specified distance along the Y axis
+	def move_y(distance)
+	    vertex last_point + Point[0,distance];
+	end
+
 	# Draw a vertical line to the given y-coordinate while preserving the
 	# x-coordinate of the previous point
 	def move_vertical_to(y)

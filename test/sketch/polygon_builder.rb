@@ -53,6 +53,28 @@ class SketchPolygonBuilderTest < Test::Unit::TestCase
 	assert_equal(Point[2,1], @builder.elements[1])
     end
 
+    must "have a move_x command that makes a new vertex above the previous one" do
+	polygon = @builder.evaluate do
+	    start_at	[0,0]
+	    move_x	2
+	end
+	assert_equal(2, @builder.elements.length)
+	assert_kind_of(Sketch::Point, @builder.elements[0])
+	assert_kind_of(Sketch::Point, @builder.elements[1])
+	assert_equal(Point[2,0], @builder.elements[1])
+    end
+
+    must "have a move_y command that makes a new vertex above the previous one" do
+	polygon = @builder.evaluate do
+	    start_at	[0,0]
+	    move_y	2
+	end
+	assert_equal(2, @builder.elements.length)
+	assert_kind_of(Sketch::Point, @builder.elements[0])
+	assert_kind_of(Sketch::Point, @builder.elements[1])
+	assert_equal(Point[0,2], @builder.elements[1])
+    end
+
     must "have a move_vertical_to command that makes a new vertex above the previous one" do
 	polygon = @builder.evaluate do
 	    start_at		[0,0]
