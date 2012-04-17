@@ -24,11 +24,13 @@ class SketchPolygonBuilderTest < Test::Unit::TestCase
     end
 
     must "have a vertex command that makes a new point" do
+	v = nil
 	polygon = @builder.evaluate do
-	    vertex	[0,0]
+	    v = vertex	[0,0]
 	end
 	assert_equal(1, @builder.elements.length)
 	assert_kind_of(Sketch::Point, @builder.elements[0])
+	assert_kind_of(Sketch::Point, v)
     end
 
     must "have a move command that makes a new vertex" do

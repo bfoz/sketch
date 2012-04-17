@@ -63,7 +63,9 @@ The same thing, but more succint:
 
 	# Create and append a new vertex
 	def vertex(*args)
-	    @elements.push Point[*args]
+	    point = Point[*args]
+	    @elements.push point
+	    point
 	end
 
 	# @endgroup
