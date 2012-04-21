@@ -9,6 +9,7 @@ A Sketch is a container for Geometry objects.
 class Sketch
     attr_reader :elements
 
+    Circle = Geometry::Circle
     Line = Geometry::Line
 
     def initialize
@@ -20,9 +21,12 @@ class Sketch
 	@elements
     end
 
-    # Create a new Circle with the given center and radius
-    def circle(*center, radius)
-	@elements.push Circle.new(0,0,radius)
+    # Create and append a new {Circle} object given a center point and radius
+    # @param	[Point]	    center  The circle's center point
+    # @param	[Number]    radius  The circle's radius
+    # @return	[Circle]    A new {Circle}
+    def circle(*args)
+	@elements.push Circle.new(*args)
 	@elements.last
     end
 

@@ -18,3 +18,16 @@ License
 
 Copyright 2012 Brandon Fosdick <bfoz@bfoz.net> and released under the BSD 
 license.
+
+Examples
+--------
+
+A basic sketch with a single circle
+
+```ruby
+require 'sketch'
+
+sketch = Sketch do
+    circle [0,0], 5	# Center = [0,0], Radius = 5
+end
+```

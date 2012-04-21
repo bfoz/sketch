@@ -13,6 +13,14 @@ class SketchTest < Test::Unit::TestCase
 	assert(sketch.public_methods.include?(:elements))
     end
 
+    must "have a circle command that makes a new circle from a center point and radius" do
+	sketch = Sketch.new
+	circle = sketch.circle [1,2], 3
+	assert_kind_of(Geometry::Circle, circle)
+	assert_equal(circle.center, [1,2])
+	assert_equal(3, circle.radius)
+    end
+
     must "have a point creation method" do
 	sketch = Sketch.new
 	point = sketch.point(5,6)
