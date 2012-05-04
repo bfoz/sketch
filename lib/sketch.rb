@@ -11,6 +11,7 @@ class Sketch
 
     Circle = Geometry::Circle
     Line = Geometry::Line
+    Rectangle = Geometry::Rectangle
 
     def initialize
 	@elements = []
@@ -39,6 +40,12 @@ class Sketch
     # Create a Point with any arguments that work for {Geometry::Point}
     def point(*args)
 	@elements.push Point[*args]
+	@elements.last
+    end
+
+    # Create a {Rectangle}
+    def rectangle(*args)
+	@elements.push Rectangle.new(*args)
 	@elements.last
     end
 

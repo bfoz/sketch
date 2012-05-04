@@ -35,3 +35,14 @@ class SketchTest < Test::Unit::TestCase
 	assert_kind_of(Sketch::Line, line)
     end
 end
+
+class SketchGeometryTest < Test::Unit::TestCase
+    def setup
+	@sketch = Sketch.new
+    end
+
+    must "have a rectangle creation method" do
+	rectangle = @sketch.rectangle 10, 20
+	assert_kind_of(Geometry::Rectangle, rectangle)
+    end
+end
