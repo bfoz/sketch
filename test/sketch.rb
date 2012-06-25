@@ -1,48 +1,39 @@
-require 'test/unit'
-require_relative 'test_unit_extensions'
-require_relative '../lib/sketch'
+require 'minitest/autorun'
+require 'sketch'
 
-class SketchTest < Test::Unit::TestCase
-    must "create a Sketch object" do
-	sketch = Sketch.new
-	assert_kind_of(Sketch, sketch);
+describe Sketch do
+    let(:sketch)    { Sketch.new }
+
+    it "should create a Sketch object" do
+	sketch.must_be_kind_of Sketch
     end
 
-    must "have an elements accessor" do
-	sketch = Sketch.new
-	assert(sketch.public_methods.include?(:elements))
+    it "should have a read only elements accessor" do
+	sketch.must_respond_to :elements
+	sketch.wont_respond_to :elements=
     end
 
-    must "have a circle command that makes a new circle from a center point and radius" do
-	sketch = Sketch.new
+    it "should have a circle command that makes a new circle from a center point and radius" do
 	circle = sketch.circle [1,2], 3
-	assert_kind_of(Geometry::Circle, circle)
-	assert_equal(circle.center, [1,2])
-	assert_equal(3, circle.radius)
+	circle.must_be_kind_of Geometry::Circle
+	circle.center.must_equal Point[1,2]
+	circle.radius.must_equal 3
     end
 
-    must "have a point creation method" do
-	sketch = Sketch.new
+    it "should have a point creation method" do
 	point = sketch.point(5,6)
-	assert_kind_of(Sketch::Point, point)
-	assert_equal(5, point.x)
-	assert_equal(6, point.y)
+	point.must_be_kind_of Sketch::Point
+	point.x.must_equal 5
+	point.y.must_equal 6
     end
 
-    must "have a line creation method" do
-	sketch = Sketch.new
+    it "have a line creation method" do
 	line = sketch.line([5,6], [7,8])
-	assert_kind_of(Sketch::Line, line)
-    end
-end
-
-class SketchGeometryTest < Test::Unit::TestCase
-    def setup
-	@sketch = Sketch.new
+	line.must_be_kind_of Sketch::Line
     end
 
-    must "have a rectangle creation method" do
-	rectangle = @sketch.rectangle 10, 20
-	assert_kind_of(Geometry::Rectangle, rectangle)
+    it "have a rectangle creation method" do
+	rectangle = sketch.rectangle 10, 20
+	rectangle.must_be_kind_of Geometry::Rectangle
     end
 end
