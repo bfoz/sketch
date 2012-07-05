@@ -13,8 +13,9 @@ class Sketch
     Line = Geometry::Line
     Rectangle = Geometry::Rectangle
 
-    def initialize
+    def initialize(&block)
 	@elements = []
+	instance_eval(&block) if block_given?
     end
 
     # Return all of the Sketch's elements rendered into Geometry objects
@@ -63,7 +64,5 @@ class Sketch
 end
 
 def Sketch(&block)
-    s = Sketch.new
-    s.instance_eval(&block) if block_given?
-    s
+    Sketch.new &block
 end

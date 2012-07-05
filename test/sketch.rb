@@ -36,4 +36,19 @@ describe Sketch do
 	rectangle = sketch.add_rectangle 10, 20
 	rectangle.must_be_kind_of Geometry::Rectangle
     end
+
+    describe "when constructed with a block" do
+	before do
+	    @sketch = Sketch.new do
+		add_circle [1,2], 3
+	    end
+	end
+
+	it "should execute the block" do
+	    circle = @sketch.elements.last
+	    circle.must_be_kind_of Geometry::Circle
+	    circle.center.must_equal Point[1,2]
+	    circle.radius.must_equal 3
+	end
+    end
 end
