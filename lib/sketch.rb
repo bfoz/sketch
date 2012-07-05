@@ -26,32 +26,32 @@ class Sketch
     # @param	[Point]	    center  The circle's center point
     # @param	[Number]    radius  The circle's radius
     # @return	[Circle]    A new {Circle}
-    def circle(*args)
+    def add_circle(*args)
 	@elements.push Circle.new(*args)
 	@elements.last
     end
 
     # Create a Line using any arguments that work for {Geometry::Line}
-    def line(*args)
+    def add_line(*args)
 	@elements.push Line[*args]
 	@elements.last
     end
 
     # Create a Point with any arguments that work for {Geometry::Point}
-    def point(*args)
+    def add_point(*args)
 	@elements.push Point[*args]
 	@elements.last
     end
 
     # Create a {Rectangle}
-    def rectangle(*args)
+    def add_rectangle(*args)
 	@elements.push Rectangle.new(*args)
 	@elements.last
     end
 
     # Create a Polygon with the given vertices, or using a block.
     # See {PolygonBuilder}
-    def polygon(*args, &block)
+    def add_polygon(*args, &block)
 	if block_given?
 	    @elements.push PolygonBuilder.new.evaluate(&block)
 	    @elements.last

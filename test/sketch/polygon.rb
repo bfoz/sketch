@@ -5,13 +5,13 @@ describe Sketch do
     let(:sketch)    { Sketch.new }
 
     it "should add a polygon" do
-	polygon = sketch.polygon [0,0], [1,0], [1,1], [0,1]
+	polygon = sketch.add_polygon [0,0], [1,0], [1,1], [0,1]
 	polygon.must_be_kind_of Sketch::Polygon
 	polygon.vertices.size.must_equal 4
     end
 
     it "should add a polygon using a block" do
-	polygon = sketch.polygon do
+	polygon = sketch.add_polygon do
 	    vertex [0,0]
 	    point [1,0]
 	    edge [1,1], [0,1]
@@ -22,7 +22,7 @@ describe Sketch do
     end
 
     it "should make a square polygon using turtle-like commands" do
-	polygon = sketch.polygon do
+	polygon = sketch.add_polygon do
 	    start_at [0,0]
 	    move_to [1,0]
 	    turn_left 90
@@ -40,7 +40,7 @@ describe Sketch do
     end
 
     it "should make another square polygon using turtle-like commands" do
-    	polygon = sketch.polygon do
+    	polygon = sketch.add_polygon do
 	    start_at [0,0]
 	    move [1,0]
 	    move [0,1]
