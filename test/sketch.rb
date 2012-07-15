@@ -35,6 +35,16 @@ describe Sketch do
     it "have a rectangle creation method" do
 	rectangle = sketch.add_rectangle 10, 20
 	rectangle.must_be_kind_of Geometry::Rectangle
+	rectangle.points.must_equal [Point[-5,-10], Point[-5,10], Point[5,10], Point[5,-10]]
+    end
+
+    it "should have a method for adding a square" do
+	square = sketch.add_square 10
+	square.must_be_kind_of Geometry::Rectangle
+	square.width.must_equal 10
+	square.height.must_equal 10
+	square.center.must_equal Point[0,0]
+	square.points.must_equal [Point[-5,-5], Point[-5,5], Point[5,5], Point[5,-5]]
     end
 
     describe "when constructed with a block" do

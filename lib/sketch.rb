@@ -50,6 +50,12 @@ class Sketch
 	@elements.last
     end
 
+    # Create a Square with sides of the given length
+    # @param [Numeric] length	The length of the sides of the square
+    def add_square(length)
+	add_rectangle length, length
+    end
+
     # Create a Polygon with the given vertices, or using a block.
     # See {PolygonBuilder}
     def add_polygon(*args, &block)
