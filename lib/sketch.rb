@@ -23,6 +23,14 @@ class Sketch
 	@elements
     end
 
+    # Adds all of the given {Geometry} objects to the {Sketch}
+    # @param [Array<Geometry>]   args The {Geometry} elements to add to the {Sketch}
+    # @return [Geometry]    The last element added to the {Sketch}
+    def push(*args)
+	@elements.push *args
+	@elements.last
+    end
+
     # Create and append a new {Circle} object given a center point and radius
     # @param	[Point]	    center  The circle's center point
     # @param	[Number]    radius  The circle's radius

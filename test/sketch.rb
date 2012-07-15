@@ -13,6 +13,11 @@ describe Sketch do
 	sketch.wont_respond_to :elements=
     end
 
+    it "must have a push method that pushes elements" do
+	sketch.push Rectangle.new 5, 5
+	sketch.elements.last.must_be_kind_of Rectangle
+    end
+
     it "should have a circle command that makes a new circle from a center point and radius" do
 	circle = sketch.add_circle [1,2], 3
 	circle.must_be_kind_of Geometry::Circle
