@@ -1,4 +1,5 @@
 require 'geometry'
+require_relative 'sketch/builder'
 require_relative 'sketch/point.rb'
 require_relative 'sketch/polygon'
 
@@ -78,5 +79,5 @@ class Sketch
 end
 
 def Sketch(&block)
-    Sketch.new &block
+    Sketch::Builder.new &block
 end
