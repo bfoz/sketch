@@ -31,7 +31,7 @@ describe Sketch::Builder do
 	    end
 
 	    it "should create the commanded elements" do
-		builder.sketch.elements.last.must_be_kind_of Rectangle
+		builder.sketch.elements.last.must_be_kind_of Geometry::Square
 	    end
 	end
     end
@@ -44,7 +44,7 @@ describe Sketch::Builder do
 	}
 
 	it "must evaluate the block" do
-	    builder.sketch.elements.last.must_be_kind_of Rectangle
+	    builder.sketch.elements.last.must_be_kind_of Geometry::Square
  	end
     end
 end

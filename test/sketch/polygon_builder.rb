@@ -17,7 +17,7 @@ describe Sketch do
 	    start_at	[1,1]
 	end
 	assert_equal(1, builder.elements.length)
-	assert_kind_of(Sketch::Point, builder.elements[0])
+	assert_kind_of(Point, builder.elements[0])
     end
 
     it "have a vertex command that makes a new point" do
@@ -26,8 +26,8 @@ describe Sketch do
 	    v = vertex	[0,0]
 	end
 	assert_equal(1, builder.elements.length)
-	assert_kind_of(Sketch::Point, builder.elements[0])
-	assert_kind_of(Sketch::Point, v)
+	assert_kind_of(Point, builder.elements[0])
+	assert_kind_of(Point, v)
     end
 
     it "have a move command that makes a new vertex" do
@@ -36,8 +36,8 @@ describe Sketch do
 	    move	[1,1]
 	end
 	assert_equal(2, builder.elements.length)
-	assert_kind_of(Sketch::Point, builder.elements[0])
-	assert_kind_of(Sketch::Point, builder.elements[1])
+	assert_kind_of(Point, builder.elements[0])
+	assert_kind_of(Point, builder.elements[1])
 	assert_equal(Point[1,1], builder.elements[1])
     end
 
@@ -58,8 +58,8 @@ describe Sketch do
 	    move_x	2
 	end
 	assert_equal(2, builder.elements.length)
-	assert_kind_of(Sketch::Point, builder.elements[0])
-	assert_kind_of(Sketch::Point, builder.elements[1])
+	assert_kind_of(Point, builder.elements[0])
+	assert_kind_of(Point, builder.elements[1])
 	assert_equal(Point[2,0], builder.elements[1])
     end
 
@@ -69,8 +69,8 @@ describe Sketch do
 	    move_y	2
 	end
 	assert_equal(2, builder.elements.length)
-	assert_kind_of(Sketch::Point, builder.elements[0])
-	assert_kind_of(Sketch::Point, builder.elements[1])
+	assert_kind_of(Point, builder.elements[0])
+	assert_kind_of(Point, builder.elements[1])
 	assert_equal(Point[0,2], builder.elements[1])
     end
 
@@ -80,8 +80,8 @@ describe Sketch do
 	    move_vertical_to	2
 	end
 	assert_equal(2, builder.elements.length)
-	assert_kind_of(Sketch::Point, builder.elements[0])
-	assert_kind_of(Sketch::Point, builder.elements[1])
+	assert_kind_of(Point, builder.elements[0])
+	assert_kind_of(Point, builder.elements[1])
 	assert_equal(Point[0,2], builder.elements[1])
     end
 
