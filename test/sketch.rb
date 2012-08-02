@@ -45,7 +45,7 @@ describe Sketch do
 
     it "should have a method for adding a square" do
 	square = sketch.add_square 10
-	square.must_be_kind_of Geometry::Rectangle
+	square.must_be_kind_of Geometry::Square
 	square.width.must_equal 10
 	square.height.must_equal 10
 	square.center.must_equal Point[0,0]

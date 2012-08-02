@@ -13,6 +13,7 @@ class Sketch
     Circle = Geometry::Circle
     Line = Geometry::Line
     Rectangle = Geometry::Rectangle
+    Square = Geometry::Square
 
     def initialize(&block)
 	@elements = []
@@ -62,7 +63,7 @@ class Sketch
     # Create a Square with sides of the given length
     # @param [Numeric] length	The length of the sides of the square
     def add_square(length)
-	add_rectangle length, length
+	push Geometry::CenteredSquare.new [0,0], length
     end
 
     # Create a Polygon with the given vertices, or using a block.
