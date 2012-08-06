@@ -10,6 +10,7 @@ A Sketch is a container for Geometry objects.
 class Sketch
     attr_reader :elements
 
+    Arc = Geometry::Arc
     Circle = Geometry::Circle
     Line = Geometry::Line
     Rectangle = Geometry::Rectangle
@@ -31,6 +32,13 @@ class Sketch
     def push(*args)
 	@elements.push *args
 	@elements.last
+    end
+
+    # Create and append a new {Arc} object
+    # @param (see Arc#initialize)
+    # @return [Arc]
+    def add_arc(*args)
+	@elements.push(Arc.new(*args)).last
     end
 
     # Create and append a new {Circle} object given a center point and radius
