@@ -21,6 +21,26 @@ class Sketch
 	instance_eval(&block) if block_given?
     end
 
+    # Define a class parameter
+    # @param [Symbol] name  The name of the parameter
+    # @param [Proc] block   A block that evaluates to the desired value of the parameter
+    def self.define_parameter name, &block
+	define_method name do
+	    @parameters ||= {}
+	    @parameters.fetch(name) { |k| @parameters[k] = instance_eval(&block) }
+	end
+    end
+
+    # Define an instance parameter
+    # @param [Symbol] name	The name of the parameter
+    # @param [Proc] block	A block that evaluates to the desired value of the parameter
+    def define_parameter name, &block
+	singleton_class.send :define_method, name do
+	    @parameters ||= {}
+	    @parameters.fetch(name) { |k| @parameters[k] = instance_eval(&block) }
+	end
+    end
+
     # Return all of the Sketch's elements rendered into Geometry objects
     def geometry
 	@elements

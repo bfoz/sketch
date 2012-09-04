@@ -18,6 +18,24 @@ describe Sketch do
 	sketch.elements.last.must_be_kind_of Rectangle
     end
 
+    describe "parameters" do
+	it "must define custom parameters" do
+	    Sketch.define_parameter(:a_parameter) { 42 }
+	    Sketch.new.a_parameter.must_equal 42
+	end
+
+	it "must bequeath custom parameters to subclasses" do
+	    Sketch.define_parameter(:a_parameter) { 42 }
+	    Class.new(Sketch).new.must_respond_to(:a_parameter)
+	end
+
+	it "must not allow access to parameters defined on a subclass" do
+	    Sketch.define_parameter(:a_parameter) { 42 }
+	    Class.new(Sketch).define_parameter(:b_parameter) { 24 }
+	    Sketch.new.wont_respond_to :b_parameter
+	end
+    end
+
     it "should have a circle command that makes a new circle from a center point and radius" do
 	circle = sketch.add_circle [1,2], 3
 	circle.must_be_kind_of Geometry::Circle

@@ -24,14 +24,34 @@ describe Sketch::Builder do
 	end
 
 	describe "when evaluating a block" do
-	    before do
-		builder.evaluate do
-		    square 5
+	    describe "with simple geometry" do
+		before do
+		    builder.evaluate do
+			square 5
+		    end
+		end
+
+		it "should create the commanded elements" do
+		    builder.sketch.elements.last.must_be_kind_of Geometry::Square
 		end
 	    end
 
-	    it "should create the commanded elements" do
-		builder.sketch.elements.last.must_be_kind_of Geometry::Square
+	    describe "that defines a parameter" do
+		before do
+		    builder.evaluate do
+			let(:parameterA) { 42 }
+			circle [1,2], parameterA
+		    end
+		end
+
+		it "must define the parameter" do
+		    builder.sketch.parameterA.must_equal 42
+		end
+
+		it "must use the parameter" do
+		    builder.sketch.elements.last.must_be_instance_of Geometry::Circle
+		    builder.sketch.elements.last.radius.must_equal 42
+		end
 	    end
 	end
     end
