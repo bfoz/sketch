@@ -34,6 +34,10 @@ describe Sketch::Builder do
 		it "should create the commanded elements" do
 		    builder.sketch.elements.last.must_be_kind_of Geometry::Square
 		end
+
+		it "triangle" do
+		    builder.evaluate { triangle [0,0], [1,0], [0,1] }
+		end
 	    end
 
 	    describe "that defines a parameter" do

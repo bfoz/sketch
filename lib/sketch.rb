@@ -46,13 +46,15 @@ class Sketch
 	@elements
     end
 
-    # Adds all of the given {Geometry} objects to the {Sketch}
+    # Adds all of the given {Geometry} elements to the {Sketch}
     # @param [Array<Geometry>]   args The {Geometry} elements to add to the {Sketch}
     # @return [Geometry]    The last element added to the {Sketch}
     def push(*args)
 	@elements.push *args
 	@elements.last
     end
+
+# @group Geometry creation
 
     # Create and append a new {Arc} object
     # @param (see Arc#initialize)
@@ -105,6 +107,15 @@ class Sketch
 	    @elements.last
 	end
     end
+
+    # Create and add a {Triangle}
+    # @param (see Triangle::new)
+    def add_triangle(*args)
+	push Geometry::Triangle.new *args
+    end
+
+# @endgroup
+
 end
 
 def Sketch(&block)

@@ -94,5 +94,10 @@ describe Sketch do
 	    arc.start_angle.must_equal 0
 	    arc.end_angle.must_equal 90
 	end
+
+	it "triangle" do
+	    triangle = sketch.add_triangle [0,0], [1,0], [0,1]
+	    sketch.elements.last.must_be_kind_of Geometry::Triangle
+	end
     end
 end
