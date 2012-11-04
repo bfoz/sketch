@@ -1,3 +1,5 @@
+require_relative 'path_builder'
+
 class Sketch
     class Builder
 	attr_reader :sketch
@@ -17,6 +19,11 @@ class Sketch
 	# @param [Proc] block	A block that evaluates to the value of the parameter
 	def let name, &block
 	    @sketch.define_parameter name, &block
+	end
+
+	# Use the given block to build a {Path} and then append it to the {Sketch}
+	def path(&block)
+	    @sketch.push PathBuilder.new.evaluate(&block)
 	end
 
 	def push(*args)

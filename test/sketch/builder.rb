@@ -57,6 +57,20 @@ describe Sketch::Builder do
 		    builder.sketch.elements.last.radius.must_equal 42
 		end
 	    end
+
+	    describe "with a path block" do
+		before do
+		    builder.evaluate do
+			path do
+			end
+		    end
+		end
+
+		it "must add a Path object to the Sketch" do
+		    builder.sketch.elements.last.must_be_instance_of Geometry::Path
+		end
+	    end
+
 	end
     end
 
