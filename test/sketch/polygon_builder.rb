@@ -95,4 +95,47 @@ describe Sketch do
 	assert_kind_of(Sketch::Point, builder.elements[1])
 	assert_equal(Point[2,0], builder.elements[1])
     end
+
+    describe "relative movement" do
+	before do
+	    builder.start_at [1,2]
+	end
+
+	it "must move over when told to move_x" do
+	    builder.move_x 3
+	    builder.elements.length.must_equal 2
+	    builder.elements.last.must_equal Point[4,2]
+	end
+
+	it "must move up when told to move_y" do
+	    builder.move_y 4
+	    builder.elements.length.must_equal 2
+	    builder.elements.last.must_equal Point[1,6]
+	end
+
+	it "must move up" do
+	    builder.up 3
+	    builder.elements.length.must_equal 2
+	    builder.elements.last.must_equal Point[1,5]
+	end
+
+	it "must move down" do
+	    builder.down 3
+	    builder.elements.length.must_equal 2
+	    builder.elements.last.must_equal Point[1,-1]
+	end
+
+	it "must move left" do
+	    builder.left 3
+	    builder.elements.length.must_equal 2
+	    builder.elements.last.must_equal Point[-2,2]
+	end
+
+	it "must move right" do
+	    builder.right 3
+	    builder.elements.length.must_equal 2
+	    builder.elements.last.must_equal Point[4,2]
+	end
+    end
+
 end

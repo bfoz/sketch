@@ -67,6 +67,34 @@ class Sketch
 	    @start_position = @position
 	end
 
+	# @group Relative Movement
+
+	# Move the specified distance along the +Y axis
+	# @param [Number] distance  The distance to move in the +Y direction
+	def up(distance)
+	    move_y distance
+	end
+
+	# Move the specified distance along the -Y axis
+	# @param [Number] distance  The distance to move in the -Y direction
+	def down(distance)
+	    move_y -distance
+	end
+
+	# Move the specified distance along the -X axis
+	# @param [Number] distance  The distance to move in the -X direction
+	def left(distance)
+	    move_x -distance
+	end
+
+	# Move the specified distance along the +X axis
+	# @param [Number] distance  The distance to move in the +X direction
+	def right(distance)
+	    move_x distance
+	end
+
+	# @endgroup
+
 	# @endgroup
     end
 end
