@@ -67,7 +67,7 @@ describe Sketch do
 	square.width.must_equal 10
 	square.height.must_equal 10
 	square.center.must_equal Point[0,0]
-	square.points.must_equal [Point[-5,-5], Point[-5,5], Point[5,5], Point[5,-5]]
+	square.points.must_equal [Point[-5,-5], Point[5,-5], Point[5,5], Point[-5,5]]
     end
 
     describe "when constructed with a block" do
