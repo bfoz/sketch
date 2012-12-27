@@ -23,6 +23,13 @@ describe Sketch::Builder do
 	    builder.sketch.elements.last.must_be_kind_of Rectangle
 	end
 
+	describe "command handlers" do
+	    it "must recognize the rectangle command" do
+		builder.rectangle([1,2], [3,4]).must_be_instance_of(Rectangle)
+		builder.sketch.elements.last.must_be_kind_of Rectangle
+	    end
+	end
+
 	describe "when evaluating a block" do
 	    describe "with simple geometry" do
 		before do

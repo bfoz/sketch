@@ -5,6 +5,12 @@ class Sketch
     class Builder
 	attr_reader :sketch
 
+	# @group Convenience constants
+	Point = Geometry::Point
+	Reectangle = Geometry::Rectangle
+	Size = Geometry::Size
+	# @endgroup
+
 	def initialize(sketch=nil, &block)
 	    @sketch = sketch || Sketch.new
 	    evaluate(&block) if block_given?
@@ -22,6 +28,8 @@ class Sketch
 	    @sketch.define_parameter name, &block
 	end
 
+	# @group Command handlers
+
 	# Use the given block to build a {Path} and then append it to the {Sketch}
 	def path(&block)
 	    @sketch.push PathBuilder.new.evaluate(&block)
@@ -35,6 +43,13 @@ class Sketch
 	def push(*args)
 	    @sketch.push *args
 	end
+
+	# Create a {Rectangle} from the given arguments and append it to the {Sketch}
+	def rectangle(*args)
+	    @sketch.push Rectangle.new(*args)
+	end
+
+	# @endgroup
 
 	def method_missing(id, *args, &block)
 	    add_symbol = ('add_' + id.to_s).to_sym
