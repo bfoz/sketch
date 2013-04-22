@@ -19,7 +19,7 @@ describe Sketch::Builder do
  	end
 
 	it "must have a push method that pushes elements" do
-	    builder.push Rectangle.new 5, 5
+	    builder.push Rectangle.new size:[5, 5]
 	    builder.sketch.elements.last.must_be_kind_of Rectangle
 	end
 

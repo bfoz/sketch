@@ -14,7 +14,7 @@ describe Sketch do
     end
 
     it "must have a push method that pushes elements" do
-	sketch.push Rectangle.new 5, 5
+	sketch.push Rectangle.new size:[5, 5]
 	sketch.elements.last.must_be_kind_of Rectangle
     end
 
@@ -56,9 +56,9 @@ describe Sketch do
     end
 
     it "have a rectangle creation method" do
-	rectangle = sketch.add_rectangle 10, 20
+	rectangle = sketch.add_rectangle size:[10, 20]
 	rectangle.must_be_kind_of Geometry::Rectangle
-	rectangle.points.must_equal [Point[-5,-10], Point[-5,10], Point[5,10], Point[5,-10]]
+	rectangle.points.must_equal [Point[0,0], Point[0,20], Point[10,20], Point[10,0]]
     end
 
     it "should have a method for adding a square" do
