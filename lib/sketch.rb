@@ -9,6 +9,7 @@ A Sketch is a container for Geometry objects.
 
 class Sketch
     attr_reader :elements
+    attr_accessor :transformation
 
     Arc = Geometry::Arc
     Circle = Geometry::Circle
@@ -46,12 +47,18 @@ class Sketch
 	@elements
     end
 
-    # Adds all of the given {Geometry} elements to the {Sketch}
+    # Adds the given {Geometry} elements to the {Sketch}
     # @param [Array<Geometry>]   args The {Geometry} elements to add to the {Sketch}
     # @return [Geometry]    The last element added to the {Sketch}
-    def push(*args)
-	@elements.push *args
-	@elements.last
+    def push(element, *args)
+	options, args = args.partition {|a| a.is_a? Hash}
+	options = options.reduce({}, :merge)
+
+	if options and (options.size != 0) and (element.respond_to? :transformation)
+	    element.transformation = Geometry::Transformation.new options
+	end
+
+	@elements.push(element).last
     end
 
 # @group Geometry creation

@@ -13,9 +13,15 @@ describe Sketch do
 	sketch.wont_respond_to :elements=
     end
 
-    it "must have a push method that pushes elements" do
+    it "must have a push method that pushes an element" do
 	sketch.push Rectangle.new size:[5, 5]
 	sketch.elements.last.must_be_kind_of Rectangle
+    end
+
+    it "must push a sketch with a transformation" do
+	sketch.push Sketch.new(), origin:[1,2]
+	sketch.elements.last.must_be_kind_of Sketch
+	sketch.elements.last.transformation.must_equal Geometry::Transformation.new(origin:[1,2])
     end
 
     describe "parameters" do
