@@ -42,10 +42,52 @@ class Sketch
 	end
     end
 
-    # Return all of the Sketch's elements rendered into Geometry objects
+# @group Accessors
+    # @attribute [r] bounds
+    #   @return [Rectangle] The smallest axis-aligned {Rectangle} that encloses all of the elements
+    def bounds
+	return nil unless @elements.count
+	max = nil
+	min = nil
+	@elements.each do |e|
+	    emin, emax = e.minmax
+	    max = max ? Point[[max.x, emax.x].max, [max.y, emax.y].max] : emax
+	    min = min ? Point[[min.x, emin.x].min, [min.y, emin.y].min] : emin
+	end
+	Rectangle.new(min, max)
+    end
+
+    # @attribute [r] geometry
+    #   @return [Array] All elements rendered into Geometry objects
     def geometry
 	@elements
     end
+
+    # @attribute [r] max
+    # @return [Point]
+    def max
+	@elements.map {|e| e.max }.reduce {|memo, e| Point[[memo.x, e.x].max, [memo.y, e.y].max] }
+    end
+
+    # @attribute [r] min
+    # @return [Point]
+    def min
+	@elements.map {|e| e.min }.reduce {|memo, e| Point[[memo.x, e.x].min, [memo.y, e.y].min] }
+    end
+
+    # @attribute [r] minmax
+    # @return [Array<Point>]
+    def minmax
+	@elements.map {|e| e.minmax }.reduce {|memo, e| [Point[[memo.first.x, e.first.x].min, [memo.first.y, e.first.y].min], Point[[memo.last.x, e.last.x].max, [memo.last.y, e.last.y].max]] }
+    end
+
+    # @attribute [r] size
+    # @return [Size]	The size of the {Rectangle} that bounds all of the {Sketch}'s elements
+    def size
+	self.minmax.reverse.reduce(:-)
+    end
+
+# @endgroup
 
     # Adds the given {Geometry} elements to the {Sketch}
     # @param [Array<Geometry>]   args The {Geometry} elements to add to the {Sketch}

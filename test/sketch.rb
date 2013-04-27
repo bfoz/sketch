@@ -2,6 +2,10 @@ require 'minitest/autorun'
 require 'sketch'
 
 describe Sketch do
+    Point = Geometry::Point
+    Rectangle = Geometry::Rectangle
+    Size = Geometry::Size
+
     let(:sketch)    { Sketch.new }
 
     it "should create a Sketch object" do
@@ -104,6 +108,38 @@ describe Sketch do
 	it "triangle" do
 	    triangle = sketch.add_triangle [0,0], [1,0], [0,1]
 	    sketch.elements.last.must_be_kind_of Geometry::Triangle
+	end
+    end
+
+    describe "properties" do
+	subject { Sketch.new { add_circle [1,-2], 3; add_circle([-1,2], 3) } }
+
+	it "must have a bounds rectangle" do
+	    subject.bounds.must_equal Rectangle.new(from:[-4,-5], to:[4,5])
+	end
+
+	it "must have a max property that returns the upper right point of the bounding rectangle" do
+	    subject.max.must_equal Point[4,5]
+	end
+
+	it "must have a max property that returns nil when the sketch is empty" do
+	    Sketch.new.max.must_be_nil
+	end
+
+	it "must have a min property that returns the lower left point of the bounding rectangle" do
+	    subject.min.must_equal Point[-4,-5]
+	end
+
+	it "must have a min property that returns nil when the sketch is empty" do
+	    Sketch.new.min.must_be_nil
+	end
+
+	it "must have a minmax property that returns the corners of the bounding rectangle" do
+	    subject.minmax.must_equal [Point[-4,-5], Point[4,5]]
+	end
+
+	it "must have a size" do
+	    subject.size.must_equal Size[8,10]
 	end
     end
 end
