@@ -1,3 +1,4 @@
+require_relative 'group'
 require_relative 'path_builder'
 require_relative 'polyline_builder'
 
@@ -17,8 +18,8 @@ class Sketch
 	end
 
 	def evaluate(&block)
-	    instance_eval &block
-	    @model
+	    instance_eval &block if block_given?
+	    @sketch
 	end
 
 	# Define a named parameter
@@ -29,6 +30,11 @@ class Sketch
 	end
 
 	# @group Command handlers
+
+	# Create a {Group} with an optional name and transformation
+	def group(*args, &block)
+	    @sketch.push Sketch::Builder.new(Group.new(*args)).evaluate(&block)
+	end
 
 	# Use the given block to build a {Path} and then append it to the {Sketch}
 	def path(&block)

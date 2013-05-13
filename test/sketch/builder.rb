@@ -6,6 +6,8 @@ describe Sketch::Builder do
     Builder = Sketch::Builder
     Rectangle = Geometry::Rectangle
 
+    subject { Builder.new }
+
     describe "when initialized without a block" do
 	let(:builder) { Builder.new }
 
@@ -91,5 +93,32 @@ describe Sketch::Builder do
 	it "must evaluate the block" do
 	    builder.sketch.elements.last.must_be_kind_of Geometry::Square
  	end
+    end
+
+    describe "when adding a group" do
+	describe "without a block" do
+	    before do
+		subject.group origin:[1,2,3]
+	    end
+
+	    it "must have a group element" do
+		subject.sketch.elements.first.must_be_kind_of Sketch::Group
+		subject.sketch.elements.first.translation.must_equal Point[1,2,3]
+	    end
+	end
+
+	describe "with a block" do
+	    before do
+		subject.group origin:[1,2,3] { circle diameter:1 }
+	    end
+
+	    it "must have a group element" do
+		subject.sketch.elements.first.must_be_kind_of Sketch::Group
+	    end
+
+	    it "must have the correct property values" do
+		subject.sketch.elements.first.translation.must_equal Point[1,2,3]
+	    end
+	end
     end
 end
