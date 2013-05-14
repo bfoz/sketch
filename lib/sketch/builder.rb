@@ -55,6 +55,12 @@ class Sketch
 	    @sketch.push Rectangle.new(*args)
 	end
 
+	# Create a {Group} using the given translation
+	# @param [Point] point	The distance by which to translate the enclosed geometry
+	def translate(*args, &block)
+	    group(origin:Point[*args], &block)
+	end
+
 	# @endgroup
 
 	def method_missing(id, *args, &block)

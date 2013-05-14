@@ -121,4 +121,18 @@ describe Sketch::Builder do
 	    end
 	end
     end
+
+    describe "when adding a translation" do
+	before do
+	    subject.translate [1,2,3] { circle diameter:1 }
+	end
+
+	it "must have a group element" do
+	    subject.sketch.elements.first.must_be_kind_of Sketch::Group
+	end
+
+	it "must have the correct property values" do
+	    subject.sketch.elements.first.translation.must_equal Point[1,2,3]
+	end
+    end
 end
