@@ -26,7 +26,37 @@ A basic sketch with a single circle
 ```ruby
 require 'sketch'
 
-sketch = Sketch do
-    circle [0,0], 5	# Center = [0,0], Radius = 5
+sketch = Sketch.new do
+    circle center:[0,0], diameter:5	# Center = [0,0], Radius = 5
+end
+```
+
+The same sketch again, but a little more square
+
+```ruby
+Sketch.new { rectangle origin:[0,0], size:[1,1] }
+```
+
+You can also group elements for convenience
+
+```ruby
+Sketch.new do
+    group origin:[0,2] do
+        circle center:[-2, 0], radius:1
+        circle center:[2, 0], radius:1
+    end
+    circle center:[0, -1], radius:1
+end
+```
+
+There's a shortcut for when you're only creating a group to translate some elements
+
+```ruby
+Sketch.new do
+    translate [0,2] do
+        circle center:[-2, 0], radius:1
+        circle center:[2, 0], radius:1
+    end
+    circle center:[0, -1], radius:1
 end
 ```
