@@ -2,8 +2,6 @@ require 'minitest/autorun'
 require 'sketch/polygon'
 
 describe Sketch do
-    Point = Geometry::Point
-
     let(:builder)   { Sketch::PolygonBuilder.new }
 
     it "build a polygon with a block" do

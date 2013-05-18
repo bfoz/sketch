@@ -2,7 +2,6 @@ require 'minitest/autorun'
 require 'sketch/polyline_builder'
 
 describe Sketch::PolylineBuilder do
-    Point = Geometry::Point
     Polyline = Sketch::Polyline
 
     let(:builder) { Sketch::PolylineBuilder.new }

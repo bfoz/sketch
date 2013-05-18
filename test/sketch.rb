@@ -2,8 +2,6 @@ require 'minitest/autorun'
 require 'sketch'
 
 describe Sketch do
-    Point = Geometry::Point
-    Rectangle = Geometry::Rectangle
     Size = Geometry::Size
 
     let(:sketch)    { Sketch.new }
