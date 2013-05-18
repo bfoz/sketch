@@ -95,7 +95,7 @@ describe Sketch do
 
     describe "object creation" do
 	it "must create an Arc" do
-	    arc = sketch.add_arc [1,2], 3, 0, 90
+	    arc = sketch.add_arc center:[1,2], radius:3, start:0, end:90
 	    sketch.elements.last.must_be_kind_of Geometry::Arc
 	    arc.center.must_equal Point[1,2]
 	    arc.radius.must_equal 3
