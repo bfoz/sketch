@@ -1,3 +1,4 @@
+require_relative 'dsl'
 require_relative 'group'
 require_relative 'path_builder'
 require_relative 'polyline_builder'
@@ -6,9 +7,11 @@ class Sketch
     class Builder
 	attr_reader :sketch
 
+	include Sketch::DSL
+
 	# @group Convenience constants
 	Point = Geometry::Point
-	Reectangle = Geometry::Rectangle
+	Rectangle = Geometry::Rectangle
 	Size = Geometry::Size
 	# @endgroup
 
@@ -21,6 +24,22 @@ class Sketch
 	    instance_eval &block if block_given?
 	    @sketch
 	end
+
+# @group Accessors
+
+	# !@attribute [r] elements
+	#   @return [Array] The current list of elements
+	def elements
+	    @sketch.elements
+	end
+
+	# !@attribute [r] last
+	#   @return [Geometry] The last element added to the {Sketch}
+	def last
+	    elements.last
+	end
+
+# @endgroup
 
 	# Define a named parameter
 	# @param [Symbol] name	The name of the parameter
