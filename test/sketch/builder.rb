@@ -135,4 +135,30 @@ describe Sketch::Builder do
 	    subject.sketch.elements.first.translation.must_equal Point[1,2,3]
 	end
     end
+
+    describe "when adding a nested translation" do
+	before do
+	    subject.translate [1,2] do
+		translate [3,4] { circle diameter:2 }
+	    end
+	end
+
+	it "must have a group element" do
+	    subject.sketch.elements.first.must_be_kind_of Sketch::Group
+	end
+
+	it "must have the correct property values" do
+	    subject.sketch.elements.first.translation.must_equal Point[1,2]
+	end
+
+	it "must have a sub-group element" do
+	    outer_group = subject.sketch.elements.first
+	    outer_group.elements.first.must_be_kind_of Sketch::Group
+	end
+
+	it "must set the sub-group properties" do
+	    outer_group = subject.sketch.elements.first
+	    outer_group.elements.first.translation.must_equal Point[3,4]
+	end
+    end
 end
