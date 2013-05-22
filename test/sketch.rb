@@ -120,16 +120,8 @@ describe Sketch do
 	    subject.max.must_equal Point[4,5]
 	end
 
-	it "must have a max property that returns nil when the sketch is empty" do
-	    Sketch.new.max.must_be_nil
-	end
-
 	it "must have a min property that returns the lower left point of the bounding rectangle" do
 	    subject.min.must_equal Point[-4,-5]
-	end
-
-	it "must have a min property that returns nil when the sketch is empty" do
-	    Sketch.new.min.must_be_nil
 	end
 
 	it "must have a minmax property that returns the corners of the bounding rectangle" do
@@ -139,5 +131,51 @@ describe Sketch do
 	it "must have a size" do
 	    subject.size.must_equal Size[8,10]
 	end
+
+	describe "when the Sketch is empty" do
+	    subject { Sketch.new }
+
+	    it "max must return nil" do
+		subject.max.must_be_nil
+	    end
+
+	    it "min must return nil" do
+		subject.min.must_be_nil
+	    end
+
+	    it "minmax must return an array of nils" do
+		subject.minmax.each {|a| a.must_be_nil }
+	    end
+	end
+
+	describe "when the Sketch is rotated" do
+	    subject do
+		s = Sketch.new { add_rectangle center:[0, -1.5], size:[6.5, 50.5] }
+		s.transformation = Geometry::Transformation.new(angle:Math::PI/2)
+		s
+	    end
+
+	    it "must have a min property that returns the lower left point of the bounding rectangle" do
+		subject.min.x.must_be_close_to -23.75
+		subject.min.y.must_be_close_to -3.25
+	    end
+	end
+    end
+
+    describe "when the Sketch contains a group" do
+	subject { Sketch::Builder.new(Sketch.new).evaluate { translate [1,2] { circle [1,-2], 3; circle([-1,2], 3) } } }
+
+	it "must have a max property" do
+	    subject.max.must_equal Point[5,7]
+	end
+
+	it "must have a min property" do
+	    subject.min.must_equal Point[-3,-3]
+	end
+
+	it "must have a minmax property" do
+	    subject.minmax.must_equal [Point[-3,-3], Point[5,7]]
+	end
+
     end
 end

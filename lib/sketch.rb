@@ -46,15 +46,7 @@ class Sketch
     # @attribute [r] bounds
     #   @return [Rectangle] The smallest axis-aligned {Rectangle} that encloses all of the elements
     def bounds
-	return nil unless @elements.count
-	max = nil
-	min = nil
-	@elements.each do |e|
-	    emin, emax = e.minmax
-	    max = max ? Point[[max.x, emax.x].max, [max.y, emax.y].max] : emax
-	    min = min ? Point[[min.x, emin.x].min, [min.y, emin.y].min] : emin
-	end
-	Rectangle.new(min, max)
+	Rectangle.new(*minmax)
     end
 
     # @attribute [r] geometry
@@ -66,19 +58,33 @@ class Sketch
     # @attribute [r] max
     # @return [Point]
     def max
-	@elements.map {|e| e.max }.reduce {|memo, e| Point[[memo.x, e.x].max, [memo.y, e.y].max] }
+	minmax.last
     end
 
     # @attribute [r] min
     # @return [Point]
     def min
-	@elements.map {|e| e.min }.reduce {|memo, e| Point[[memo.x, e.x].min, [memo.y, e.y].min] }
+	minmax.first
     end
 
     # @attribute [r] minmax
     # @return [Array<Point>]
     def minmax
-	@elements.map {|e| e.minmax }.reduce {|memo, e| [Point[[memo.first.x, e.first.x].min, [memo.first.y, e.first.y].min], Point[[memo.last.x, e.last.x].max, [memo.last.y, e.last.y].max]] }
+	return [nil, nil] unless @elements.size != 0
+
+	memo = @elements.map {|e| e.minmax }.reduce {|memo, e| [Point[[memo.first.x, e.first.x].min, [memo.first.y, e.first.y].min], Point[[memo.last.x, e.last.x].max, [memo.last.y, e.last.y].max]] }
+	if self.transformation
+	    if self.transformation.rotation
+		# If the transformation has a rotation, convert the minmax into a bounding rectangle, rotate it, then find the new minmax
+		point1, point3 = Point[memo.last.x, memo.first.y], Point[memo.first.x, memo.last.y]
+		points = [memo.first, point1, memo.last, point3].map {|point| self.transformation.transform(point) }
+		points.reduce([points[0], points[2]]) {|memo, e| [Point[[memo.first.x, e.x].min, [memo.first.y, e.y].min], Point[[memo.last.x, e.x].max, [memo.last.y, e.y].max]] }
+	    else
+		memo.map {|point| self.transformation.transform(point) }
+	    end
+	else
+	    memo
+	end
     end
 
     # @attribute [r] size
