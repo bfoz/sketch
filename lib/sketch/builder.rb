@@ -65,6 +65,8 @@ class Sketch
 	    @sketch.push PolylineBuilder.new.evaluate(&block)
 	end
 
+	# Append a new object (with optional transformation) to the {Sketch}
+	# @return [Sketch]  the {Sketch} that was appended to
 	def push(*args)
 	    @sketch.push *args
 	end
@@ -72,6 +74,7 @@ class Sketch
 	# Create a {Rectangle} from the given arguments and append it to the {Sketch}
 	def rectangle(*args)
 	    @sketch.push Rectangle.new(*args)
+	    last
 	end
 
 	# Create a {Group} using the given translation

@@ -95,9 +95,10 @@ class Sketch
 
 # @endgroup
 
-    # Adds the given {Geometry} elements to the {Sketch}
-    # @param [Array<Geometry>]   args The {Geometry} elements to add to the {Sketch}
-    # @return [Geometry]    The last element added to the {Sketch}
+    # Append the given {Geometry} element and return the {Sketch}
+    # @param element	[Geometry]	the {Geometry} element to append
+    # @param args	[Array]		optional transformation parameters
+    # @return [Sketch]
     def push(element, *args)
 	options, args = args.partition {|a| a.is_a? Hash}
 	options = options.reduce({}, :merge)
@@ -106,7 +107,8 @@ class Sketch
 	    element.transformation = Geometry::Transformation.new options
 	end
 
-	@elements.push(element).last
+	@elements.push(element)
+	self
     end
 
 # @group Geometry creation
@@ -149,6 +151,7 @@ class Sketch
     # @param [Numeric] length	The length of the sides of the square
     def add_square(length)
 	push Geometry::CenteredSquare.new [0,0], length
+	@elements.last
     end
 
     # Create a Polygon with the given vertices, or using a block.
