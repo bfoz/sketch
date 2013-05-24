@@ -116,6 +116,14 @@ describe Sketch do
 	    subject.bounds.must_equal Rectangle.new(from:[-4,-5], to:[4,5])
 	end
 
+	it "must have an accessor for the first element" do
+	    subject.first.must_be_instance_of(Geometry::Circle)
+	end
+
+	it "must have an accessor for the last element" do
+	    subject.last.must_be_instance_of(Geometry::Circle)
+	end
+
 	it "must have a max property that returns the upper right point of the bounding rectangle" do
 	    subject.max.must_equal Point[4,5]
 	end

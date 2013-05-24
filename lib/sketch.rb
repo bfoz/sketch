@@ -49,10 +49,22 @@ class Sketch
 	Rectangle.new(*minmax)
     end
 
+    # @attribute [r] first
+    #   @return [Geometry] first the first Geometry element of the {Sketch}
+    def first
+	elements.first
+    end
+
     # @attribute [r] geometry
     #   @return [Array] All elements rendered into Geometry objects
     def geometry
 	@elements
+    end
+
+    # @attribute [r] last
+    #  @return [Geometry] the last Geometry element of the {Sketch}
+    def last
+	elements.last
     end
 
     # @attribute [r] max

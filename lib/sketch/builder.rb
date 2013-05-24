@@ -33,12 +33,6 @@ class Sketch
 	    @sketch.elements
 	end
 
-	# !@attribute [r] last
-	#   @return [Geometry] The last element added to the {Sketch}
-	def last
-	    elements.last
-	end
-
 # @endgroup
 
 	# Define a named parameter
