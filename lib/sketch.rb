@@ -102,7 +102,7 @@ class Sketch
     # @attribute [r] size
     # @return [Size]	The size of the {Rectangle} that bounds all of the {Sketch}'s elements
     def size
-	self.minmax.reverse.reduce(:-)
+	Size[self.minmax.reverse.reduce(:-).to_a]
     end
 
 # @endgroup

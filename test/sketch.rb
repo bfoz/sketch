@@ -138,6 +138,7 @@ describe Sketch do
 
 	it "must have a size" do
 	    subject.size.must_equal Size[8,10]
+	    subject.size.must_be_instance_of(Size)
 	end
 
 	describe "when the Sketch is empty" do
