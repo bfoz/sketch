@@ -79,22 +79,6 @@ describe Sketch::Builder do
 		    builder.sketch.elements.last.must_be_instance_of Geometry::Path
 		end
 	    end
-
-	    describe "with a hexagon command" do
-		before do
-		    subject.evaluate { hexagon center:[1,2], radius:5 }
-		end
-
-		it "must add a RegularPolygon" do
-		    subject.last.must_be_instance_of Geometry::RegularPolygon
-		end
-
-		it "must set the properties" do
-		    subject.last.center.must_equal Point[1,2]
-		    subject.last.edge_count.must_equal 6
-		    subject.last.radius.must_equal 5
-		end
-	    end
 	end
     end
 
