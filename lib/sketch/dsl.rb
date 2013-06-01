@@ -1,5 +1,9 @@
-# Syntactic sugar for building a {Sketch}
+require 'geometry'
 
+require_relative 'builder'
+require_relative 'layout'
+
+# Syntactic sugar for building a {Sketch}
 class Sketch
     module DSL
     # @group Accessors
@@ -21,6 +25,13 @@ class Sketch
 	def hexagon(options={})
 	    options[:sides] = 6
 	    Geometry::RegularPolygon.new(options).tap {|a| push a }
+	end
+
+	# Create a layout
+	# @param direction [Symbol] The layout direction (either :horizontal or :vertical)
+	# @return [Group]
+	def layout(direction, &block)
+	    Builder.new(Layout.new(direction)).evaluate(&block).tap {|a| push a}
 	end
     end
 end
