@@ -62,3 +62,25 @@ Sketch.new do
     circle center:[0, -1], radius:1
 end
 ```
+
+Sometimes you feel like a group, sometimes you feel like a layout.
+
+```ruby
+Sketch.new do
+    layout :horizontal do
+        circle center:[-2, 0], radius:1
+        circle center:[2, 0], radius:1
+    end
+end
+```
+
+The layout command also takes options for spacing and alignment. For example, to add one unit of extra space between each element, and align them with the X-axis:
+
+```ruby
+Sketch.new do
+    layout :horizontal, spacing:1, align: :bottom do
+        circle center:[-2, 0], radius:1
+        circle center:[2, 0], radius:1
+    end
+end
+```
