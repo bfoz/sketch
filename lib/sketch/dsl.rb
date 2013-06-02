@@ -29,6 +29,7 @@ class Sketch
 
 	# Create a layout
 	# @param direction [Symbol] The layout direction (either :horizontal or :vertical)
+	# @option options [Symbol] align    :top, :bottom, :left, or :right
 	# @option options [Number] spacing  The spacing between each element
 	# @return [Group]
 	def layout(direction, *args, &block)

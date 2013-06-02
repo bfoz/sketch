@@ -48,6 +48,8 @@ describe Sketch::Layout do
 	    group.push Geometry::Rectangle.new from:[0,0], to:[6,6]
 	    subject.push group
 
+	    subject.elements.count.must_equal 2
+
 	    subject.first.transformation.translation.must_be_nil
 	    subject.last.transformation.translation.must_equal Point[5,0]
 	end
@@ -64,6 +66,32 @@ describe Sketch::Layout do
 
 		subject.first.transformation.translation.must_be_nil
 		subject.last.transformation.translation.must_equal Point[6,0]
+	    end
+	end
+
+	describe "when bottom aligned" do
+	    subject { Sketch::Layout.new :horizontal, align: :bottom }
+
+	    it "must bottom align the elements" do
+		subject.push Group.new.push Geometry::Rectangle.new from:[0,-1], to:[5,5]
+		subject.push Group.new.push Geometry::Rectangle.new from:[0,-1], to:[6,6]
+
+		subject.first.transformation.translation.must_equal Point[0,1]
+		subject.last.transformation.translation.must_equal Point[5,1]
+	    end
+	end
+
+	describe "when top aligned" do
+	    subject { Sketch::Layout.new :horizontal, align: :top }
+
+	    it "must top align the elements" do
+		subject.push Group.new.push Geometry::Rectangle.new from:[0,0], to:[5,5]
+		subject.push Group.new.push Geometry::Rectangle.new from:[0,0], to:[6,6]
+
+		subject.elements.count.must_equal 2
+
+		subject.first.transformation.translation.must_equal Point[0,1]
+		subject.last.transformation.translation.must_equal Point[5,0]
 	    end
 	end
     end
@@ -96,6 +124,32 @@ describe Sketch::Layout do
 
 		subject.first.transformation.translation.must_be_nil
 		subject.last.transformation.translation.must_equal Point[0,6]
+	    end
+	end
+
+	describe "when left aligned" do
+	    subject { Sketch::Layout.new :vertical, align: :left }
+
+	    it "must left align the elements" do
+		subject.push Group.new.push Geometry::Rectangle.new from:[-1,0], to:[5,5]
+		subject.push Group.new.push Geometry::Rectangle.new from:[-1,0], to:[6,6]
+
+		subject.first.transformation.translation.must_equal Point[1,0]
+		subject.last.transformation.translation.must_equal Point[1,5]
+	    end
+	end
+
+	describe "when right aligned" do
+	    subject { Sketch::Layout.new :vertical, align: :right }
+
+	    it "must right align the elements" do
+		subject.push Group.new.push Geometry::Rectangle.new from:[0,0], to:[5,5]
+		subject.push Group.new.push Geometry::Rectangle.new from:[0,0], to:[6,6]
+
+		subject.elements.count.must_equal 2
+
+		subject.first.transformation.translation.must_equal Point[1,0]
+		subject.last.transformation.translation.must_equal Point[0,5]
 	    end
 	end
     end

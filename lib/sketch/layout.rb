@@ -14,6 +14,9 @@ For example, to create two adjacent squares along the X-axis, use:
 =end
 class Sketch
     class Layout < Group
+	# @return [Symbol] alignment	the layout alignment
+	attr_reader :alignment
+
 	# @return [Symbol] direction    the layout direction (either :horizontal or :vertical)
 	attr_reader :direction
 
@@ -26,6 +29,7 @@ class Sketch
 	    options, args = args.partition {|a| a.is_a? Hash}
 	    options = options.reduce({}, :merge)
 
+	    @alignment = options.delete(:align)
 	    @spacing = options.delete(:spacing) || 0
 
 	    @direction = direction
@@ -34,22 +38,20 @@ class Sketch
 	# @param element [Geometry] the geometry element to append
 	# @return [Layout]
 	def push(element, *args)
-	    if last
-		max = last.max
+	    max = last ? last.max : Point.zero
 
+	    offset = make_offset(element, element.min, max)
+
+	    if offset == Point.zero
+		super element, *args
+	    else
 		if element.respond_to?(:transformation=)
 		    super element, *args
-
-		    last.transformation = Geometry::Transformation.new(origin:make_offset(last.min, max)) + last.transformation
 		else
-		    group = Group.new
-		    group.push element, *args
-		    super group
-
-		    last.transformation = Geometry::Transformation.new(origin:make_offset(last.min, max)) + last.transformation
+		    super Group.new.push element, *args
 		end
-	    else
-		super element, *args
+
+		last.transformation = Geometry::Transformation.new(origin:offset) + last.transformation
 	    end
 
 	    self
@@ -57,10 +59,58 @@ class Sketch
 
 	private
 
-	def make_offset(min, max)
+	def make_offset(element, min, max)
 	    case direction
-		when :horizontal    then Point[max.x - last.min.x + spacing, 0]
-		when :vertical	    then Point[0, max.y - last.min.y + spacing]
+		when :horizontal
+		    y_offset = case alignment
+			when :bottom
+			    -min.y
+			when :top
+			    height = element.size.y
+			    if height > max.y
+				# Translate everything up by reparenting into a new group
+				if elements.size != 0
+				    alignment_group = Group.new
+				    alignment_group.transformation = Geometry::Transformation.new(origin: [0, height - max.y])
+				    elements.each {|a| alignment_group.push a }
+				    elements.replace [alignment_group]
+				end
+
+				-min.y	# Translate the new element to the x-axis
+			    else
+				# Translate the new element to align with the previous element
+				max.y - height
+			    end
+			else
+			    0
+		    end
+
+		    Point[max.x - min.x + ((elements.size != 0) ? spacing : 0), y_offset]
+		when :vertical
+		    x_offset = case alignment
+			when :left
+			    -min.x
+			when :right
+			    width = element.size.x
+			    if width > max.x
+				# Translate everything right by reparenting into a new group
+				if elements.size != 0
+				    alignment_group = Group.new
+				    alignment_group.transformation = Geometry::Transformation.new(origin: [width - max.x, 0])
+				    elements.each {|a| alignment_group.push a }
+				    elements.replace [alignment_group]
+				end
+
+				-min.x	# Translate the new element to the y-axis
+			    else
+				# Translate the new element to align with the previous element
+				max.x - width
+			    end
+			else
+			    0
+		    end
+
+		    Point[x_offset, max.y - min.y + ((elements.size != 0) ? spacing : 0)]
 	    end
 	end
     end
