@@ -17,8 +17,17 @@ class Sketch
 	# @return [Symbol] direction    the layout direction (either :horizontal or :vertical)
 	attr_reader :direction
 
-	def initialize(direction=:horizontal, *args, &block)
+	# @return [Number] spacing  spacing to add between each element
+	attr_reader :spacing
+
+	def initialize(direction=:horizontal, *args)
 	    super
+
+	    options, args = args.partition {|a| a.is_a? Hash}
+	    options = options.reduce({}, :merge)
+
+	    @spacing = options.delete(:spacing) || 0
+
 	    @direction = direction
 	end
 
@@ -31,29 +40,28 @@ class Sketch
 		if element.respond_to?(:transformation=)
 		    super element, *args
 
-		    translation = case direction
-			when :horizontal    then Point[max.x - last.min.x, 0]
-			when :vertical	    then Point[0, max.y - last.min.y]
-		    end
-
-		    last.transformation = Geometry::Transformation.new(origin:translation) + last.transformation
+		    last.transformation = Geometry::Transformation.new(origin:make_offset(last.min, max)) + last.transformation
 		else
 		    group = Group.new
 		    group.push element, *args
 		    super group
 
-		    translation = case direction
-			when :horizontal    then Point[max.x - last.min.x, 0]
-			when :vertical	    then Point[0, max.y - last.min.y]
-		    end
-
-		    last.transformation = Geometry::Transformation.new(origin:translation) + last.transformation
+		    last.transformation = Geometry::Transformation.new(origin:make_offset(last.min, max)) + last.transformation
 		end
 	    else
 		super element, *args
 	    end
 
 	    self
+	end
+
+	private
+
+	def make_offset(min, max)
+	    case direction
+		when :horizontal    then Point[max.x - last.min.x + spacing, 0]
+		when :vertical	    then Point[0, max.y - last.min.y + spacing]
+	    end
 	end
     end
 end

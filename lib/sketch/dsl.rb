@@ -29,9 +29,10 @@ class Sketch
 
 	# Create a layout
 	# @param direction [Symbol] The layout direction (either :horizontal or :vertical)
+	# @option options [Number] spacing  The spacing between each element
 	# @return [Group]
-	def layout(direction, &block)
-	    Builder.new(Layout.new(direction)).evaluate(&block).tap {|a| push a}
+	def layout(direction, *args, &block)
+	    Builder.new(Layout.new(direction, *args)).evaluate(&block).tap {|a| push a}
 	end
     end
 end

@@ -51,6 +51,21 @@ describe Sketch::Layout do
 	    subject.first.transformation.translation.must_be_nil
 	    subject.last.transformation.translation.must_equal Point[5,0]
 	end
+
+	describe "with spacing" do
+	    subject { Sketch::Layout.new :horizontal, spacing:1 }
+
+	    it "must add space between the elements" do
+		group = Group.new.push Geometry::Rectangle.new from:[0,0], to:[5,5]
+		subject.push group
+
+		group = Group.new.push Geometry::Rectangle.new from:[0,0], to:[6,6]
+		subject.push group
+
+		subject.first.transformation.translation.must_be_nil
+		subject.last.transformation.translation.must_equal Point[6,0]
+	    end
+	end
     end
 
     describe "when vertical" do
@@ -67,6 +82,21 @@ describe Sketch::Layout do
 
 	    subject.first.transformation.translation.must_be_nil
 	    subject.last.transformation.translation.must_equal Point[0,5]
+	end
+
+	describe "with spacing" do
+	    subject { Sketch::Layout.new :vertical, spacing:1 }
+
+	    it "must add space between the elements" do
+		group = Group.new.push Geometry::Rectangle.new from:[0,0], to:[5,5]
+		subject.push group
+
+		group = Group.new.push Geometry::Rectangle.new from:[0,0], to:[6,6]
+		subject.push group
+
+		subject.first.transformation.translation.must_be_nil
+		subject.last.transformation.translation.must_equal Point[0,6]
+	    end
 	end
     end
 end
