@@ -123,7 +123,7 @@ describe Sketch::Builder do
 
     describe "when adding a translation" do
 	before do
-	    subject.translate [1,2,3] { circle diameter:1 }
+	    subject.translate [1,2] { circle diameter:1 }
 	end
 
 	it "must have a group element" do
@@ -131,7 +131,11 @@ describe Sketch::Builder do
 	end
 
 	it "must have the correct property values" do
-	    subject.sketch.elements.first.translation.must_equal Point[1,2,3]
+	    subject.sketch.elements.first.translation.must_equal Point[1,2]
+	end
+
+	it 'must reject higher dimensions' do
+	    -> { subject.translate [1,2,3] }.must_raise ArgumentError
 	end
     end
 

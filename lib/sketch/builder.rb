@@ -74,7 +74,9 @@ class Sketch
 	# Create a {Group} using the given translation
 	# @param [Point] point	The distance by which to translate the enclosed geometry
 	def translate(*args, &block)
-	    group(origin:Point[*args], &block)
+	    point = Point[*args]
+	    raise ArgumentError, 'Translation is limited to 2 dimensions' if point.size > 2
+	    group(origin:point, &block)
 	end
 
 	# @endgroup
