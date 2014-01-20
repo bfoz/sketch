@@ -35,6 +35,7 @@ class Sketch
 	    @direction = direction
 	end
 
+	# Any pushed element that doesn't have a transformation property will be wrapped in a {Group}.
 	# @param element [Geometry] the geometry element to append
 	# @return [Layout]
 	def push(element, *args)

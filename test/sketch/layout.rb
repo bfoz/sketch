@@ -137,6 +137,17 @@ describe Sketch::Layout do
 		subject.first.transformation.translation.must_equal Point[1,0]
 		subject.last.transformation.translation.must_equal Point[1,5]
 	    end
+
+	    it "must left align primitive objects" do
+		subject.push Geometry::Rectangle.new from:[-1,-1], to:[5,5]
+		subject.push Geometry::Rectangle.new from:[0,0], to:[6,6]
+
+		subject.first.must_be_kind_of Sketch::Group
+		subject.last.must_be_kind_of Sketch::Group
+
+		subject.first.transformation.translation.must_equal Point[1,1]
+		subject.last.transformation.translation.must_equal Point[0,6]
+	    end
 	end
 
 	describe "when right aligned" do
