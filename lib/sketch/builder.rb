@@ -60,12 +60,6 @@ class Sketch
 	    @sketch.push *args
 	end
 
-	# Pop and return the last element, or nil if there was no element to pop
-	# @return [Geometry]	The popped element
-	def pop
-	    @sketch.pop
-	end
-
 	# Create a {Rectangle} from the given arguments and append it to the {Sketch}
 	def rectangle(*args)
 	    @sketch.push Rectangle.new(*args)
