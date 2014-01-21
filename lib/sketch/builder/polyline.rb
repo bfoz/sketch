@@ -1,14 +1,10 @@
-require 'geometry'
 require 'geometry/dsl/polyline'
 
 class Sketch
     Polyline = Geometry::Polyline
 
     class Builder
-	BuildError = Class.new(StandardError)
-
 	class Polyline
-
 	    attr_reader :elements
 
 	    include Geometry::DSL::Polyline

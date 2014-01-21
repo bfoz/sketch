@@ -22,7 +22,7 @@ describe Sketch::Builder::Path do
 	end
 
 	it "must refuse to start again" do
-	    lambda { builder.start_at [2,3] }.must_raise Sketch::Builder::BuildError
+	    -> { builder.start_at [2,3] }.must_raise Geometry::DSL::Polyline::BuildError
 	end
 
 	it "must move when told to move_to" do
