@@ -1,6 +1,4 @@
-require 'geometry'
-require 'geometry/polyline/dsl'
-require_relative 'point'
+require_relative 'polyline_builder'
 
 class Sketch
     Polygon = Geometry::Polygon
@@ -30,43 +28,13 @@ The same thing, but more succint:
     end
 
 =end
-    class PolygonBuilder
-	attr_reader :elements
-
+    class PolygonBuilder < PolylineBuilder
 	Edge = Geometry::Edge
 
-	include Geometry::Polyline::DSL
-
-	def initialize
-	    @elements = []
-	end
-
-	# Evaluates a block of commands and returns a new {Polygon}
+	# @return [Polygon] the {Polygon} resulting from evaluating the given block
 	def evaluate(&block)
-	    @self_before_instance_eval = eval "self", block.binding
-	    self.instance_eval &block
-	    Polygon.new(*@elements)
-	end
-	def method_missing(method, *args, &block)
-	    @self_before_instance_eval.send method, *args, &block
-	end
-
-	# @return [Point]   the first vertex of the {Polyline}
-	def first
-	    @elements.first
-	end
-
-	# @return [Point]   the last, or most recently added, vertex of the {Polyline}
-	def last
-	    @elements.last
-	end
-
-	# Push the given object
-	# @param [Geometry] arg A {Geometry} object to apped to the {Path}
-	# @return [Geometry]    The appended object
-	def push(arg)
-	    @elements.push arg
-	    arg
+	    super
+	    Polygon.new *@elements
 	end
 
 	# @group Primitive creation
@@ -74,18 +42,6 @@ The same thing, but more succint:
 	# Create and append a new Edge object
 	def edge(*args)
 	    @elements.push Edge.new(*args)
-	end
-
-	# Create and append a new vertex
-	def point(*args)
-	    self.vertex(*args)
-	end
-
-	# Create and append a new vertex
-	def vertex(*args)
-	    point = Point[*args]
-	    @elements.push point
-	    point
 	end
 
 	# @endgroup
@@ -117,21 +73,16 @@ The same thing, but more succint:
 		distance = Vector[*(distance[0])]
 	    end
 
-	    vertex(last_point + distance)
+	    push(last + distance)
 	end
 
 	# Move the specified distance in the current direction
 	def forward(distance)
 	    @direction ||= 0	# direction defaults to 0
 	    radians = @direction * Math::PI / 180
-	    vertex(last_point + Vector[distance*Math.cos(radians),distance*Math.sin(radians)])
+	    push(last + Vector[distance*Math.cos(radians),distance*Math.sin(radians)])
 	end
 
 	# @endgroup
-
-    private
-	def last_point
-	    @elements.last.is_a?(Edge) ? @elements.last.last : @elements.last
-	end
     end
 end

@@ -16,10 +16,21 @@ class Sketch
 	end
 
 	# Evaluate a block and return a new {Path}
-	# @return [Path]	A new {Path} initialized with the given block
+	#  Use the trick found here http://www.dan-manges.com/blog/ruby-dsls-instance-eval-with-delegation
+	#  to allow the DSL block to call methods in the enclosing *lexical* scope
+	# @return [Polyline]	A new {Polyline} initialized with the given block
 	def evaluate(&block)
-	    self.instance_eval &block
+	    if block_given?
+		@self_before_instance_eval = eval "self", block.binding
+		self.instance_eval &block
+	    end
 	    Polyline.new(*@elements)
+	end
+
+	# The second half of the instance_eval delegation trick mentioned at
+	#   http://www.dan-manges.com/blog/ruby-dsls-instance-eval-with-delegation
+	def method_missing(method, *args, &block)
+	    @self_before_instance_eval.send method, *args, &block
 	end
 
 	# @return [Point]   the first vertex of the {Polyline}
