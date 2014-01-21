@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require 'sketch/polyline_builder'
+require 'sketch/builder/polyline'
 
 describe Sketch::PolylineBuilder do
     Polyline = Sketch::Polyline

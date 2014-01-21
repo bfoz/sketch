@@ -1,7 +1,7 @@
 require_relative 'dsl'
 require_relative 'group'
 require_relative 'path_builder'
-require_relative 'polyline_builder'
+require_relative 'builder/polyline'
 
 class Sketch
     class Builder
@@ -58,6 +58,12 @@ class Sketch
 	# @return [Sketch]  the {Sketch} that was appended to
 	def push(*args)
 	    @sketch.push *args
+	end
+
+	# Pop and return the last element, or nil if there was no element to pop
+	# @return [Geometry]	The popped element
+	def pop
+	    @sketch.pop
 	end
 
 	# Create a {Rectangle} from the given arguments and append it to the {Sketch}

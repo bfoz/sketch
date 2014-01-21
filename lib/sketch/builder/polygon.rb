@@ -1,4 +1,4 @@
-require_relative 'polyline_builder'
+require_relative 'polyline'
 
 class Sketch
     Polygon = Geometry::Polygon

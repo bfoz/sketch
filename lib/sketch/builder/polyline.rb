@@ -43,6 +43,12 @@ class Sketch
 	    @elements.last
 	end
 
+	# Pop the previously added element. Returns the popped element, or nil if there was no element to pop
+	# @return [Geometry]	The popped element
+	def pop
+	    @elements.pop
+	end
+
 	# Push the given object
 	# @param [Geometry] arg A {Geometry} object to apped to the {Path}
 	# @return [Geometry]    The appended object

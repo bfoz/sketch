@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require 'sketch/polygon'
+require 'sketch/builder/polygon'
 
 describe Sketch do
     let(:builder)   { Sketch::PolygonBuilder.new }
