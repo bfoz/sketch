@@ -1,11 +1,11 @@
 require 'minitest/autorun'
 require 'sketch/builder/path'
 
-describe Sketch::PathBuilder do
+describe Sketch::Builder::Path do
     Path = Sketch::Path
     Point = Geometry::Point
 
-    let(:builder) { Sketch::PathBuilder.new }
+    let(:builder) { Sketch::Builder::Path.new }
 
     it "must build a Path from a block" do
 	builder.evaluate {}.must_be_kind_of Path
@@ -22,7 +22,7 @@ describe Sketch::PathBuilder do
 	end
 
 	it "must refuse to start again" do
-	    lambda { builder.start_at [2,3] }.must_raise Sketch::PathBuilder::BuildError
+	    lambda { builder.start_at [2,3] }.must_raise Sketch::Builder::BuildError
 	end
 
 	it "must move when told to move_to" do

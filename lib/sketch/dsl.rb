@@ -39,7 +39,7 @@ class Sketch
 	# Create a {Path}
 	# @return [Path]
 	def path(*args, &block)
-	    PathBuilder.new(*args).evaluate(&block).tap {|a| push a }
+	    Builder::Path.new(*args).evaluate(&block).tap {|a| push a }
 	end
 
 	# Create a Polygon with the given vertices, or using a block.
