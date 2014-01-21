@@ -19,9 +19,31 @@ class Sketch
 	    evaluate(&block) if block_given?
 	end
 
+	# Evaluate a block and return a new {Path}
+	#  Use the trick found here http://www.dan-manges.com/blog/ruby-dsls-instance-eval-with-delegation
+	#  to allow the DSL block to call methods in the enclosing *lexical* scope
+	# @return [Sketch]	A new {Sketch} initialized with the given block
 	def evaluate(&block)
-	    instance_eval &block if block_given?
+	    if block_given?
+		@self_before_instance_eval = eval "self", block.binding
+		self.instance_eval &block
+	    end
 	    @sketch
+	end
+
+	# The second half of the instance_eval delegation trick mentioned at
+	#   http://www.dan-manges.com/blog/ruby-dsls-instance-eval-with-delegation
+	def method_missing(method, *args, &block)
+	    add_symbol = ('add_' + method.to_s).to_sym
+	    if @sketch.respond_to? add_symbol
+		@sketch.send(add_symbol, *args, &block)
+	    elsif @sketch.respond_to? method
+		@sketch.send method, *args, &block
+	    elsif @self_before_instance_eval.respond_to? method
+		@self_before_instance_eval.send method, *args, &block
+	    else
+		super if defined?(super)
+	    end
 	end
 
 # @group Accessors
@@ -74,16 +96,5 @@ class Sketch
 	end
 
 	# @endgroup
-
-	def method_missing(id, *args, &block)
-	    add_symbol = ('add_' + id.to_s).to_sym
-	    if @sketch.respond_to? add_symbol
-		@sketch.send(add_symbol, *args, &block)
-	    elsif @sketch.respond_to? id
-		@sketch.send id, *args, &block
-	    else
-		super if defined?(super)
-	    end
-	end
     end
 end
