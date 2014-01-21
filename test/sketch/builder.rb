@@ -32,6 +32,12 @@ describe Sketch::Builder do
 	    end
 	end
 
+	it 'must have a polygon command' do
+	    builder.must_be :respond_to?, :polygon
+	    builder.evaluate { polygon do; end }
+	    builder.send :polygon
+	end
+
 	describe "when evaluating a block" do
 	    describe "with simple geometry" do
 		before do

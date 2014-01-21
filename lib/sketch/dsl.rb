@@ -1,6 +1,6 @@
 require 'geometry'
 
-require_relative 'builder'
+require_relative 'builder/polygon'
 require_relative 'layout'
 
 # Syntactic sugar for building a {Sketch}
