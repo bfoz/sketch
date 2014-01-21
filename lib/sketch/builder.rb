@@ -51,7 +51,7 @@ class Sketch
 
 	# Use the given block to build a {Polyline} and then append it to the {Sketch}
 	def polyline(&block)
-	    @sketch.push PolylineBuilder.new.evaluate(&block)
+	    push Builder::Polyline.new.evaluate(&block)
 	end
 
 	# Append a new object (with optional transformation) to the {Sketch}

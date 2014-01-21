@@ -46,9 +46,9 @@ class Sketch
 	# See {PolygonBuilder}
 	def polygon(*args, &block)
 	    if block_given?
-		push PolygonBuilder.new.evaluate(&block)
+		push Builder::Polygon.new.evaluate(&block)
 	    else
-		push Polygon.new(*args)
+		push Sketch::Polygon.new(*args)
 	    end
 	    last
 	end
