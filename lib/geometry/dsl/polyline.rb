@@ -1,14 +1,14 @@
 module Geometry
-    class Polyline
+    module DSL
 =begin rdoc
 When you want to draw things that are made of lots and lots of lines, this is how you do it.
- 
+
 == Requirements
 This module is intended to be included into a Class, and that Class must provide
 some infrastructure. It must provide a push method for pushing new elements, a
 first method that returns the first vertex in the {Polyline}, and a last method
 that returns the last vertex.
- 
+
 == Usage
     begin
 	start_at    [0,0]
@@ -19,7 +19,7 @@ that returns the last vertex.
 	close		    # Unnecessary in this case
     end
 =end
-	module DSL
+	module Polyline
 	    BuildError = Class.new(StandardError)
 
 	    # Close the {Polyline} with a {Line}, if it isn't already closed

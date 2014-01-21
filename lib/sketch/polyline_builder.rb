@@ -1,5 +1,5 @@
 require 'geometry'
-require 'geometry/polyline/dsl'
+require 'geometry/dsl/polyline'
 
 class Sketch
     Polyline = Geometry::Polyline
@@ -9,7 +9,7 @@ class Sketch
 
 	attr_reader :elements
 
-	include Geometry::Polyline::DSL
+	include Geometry::DSL::Polyline
 
 	def initialize
 	    @elements = []
