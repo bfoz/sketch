@@ -38,6 +38,12 @@ that returns the last vertex.
 		push Point[point]
 	    end
 
+	    # Move the specified distances along multiple axes simultaneously
+	    # @param distance [Vector]	the distance vector to move
+	    def move(*distance)
+		push (last + Point[*distance])
+	    end
+
 	    # Move the specified distance along the X axis
 	    # @param [Number] distance  The distance to move
 	    def move_x(distance)
