@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require 'sketch/path_builder'
+require 'sketch/builder/path'
 
 describe Sketch::PathBuilder do
     Path = Sketch::Path

@@ -1,6 +1,5 @@
 require_relative 'dsl'
 require_relative 'group'
-require_relative 'path_builder'
 require_relative 'builder/polyline'
 
 class Sketch
