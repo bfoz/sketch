@@ -5,8 +5,6 @@ class Sketch
 
     class Builder
 	class Polyline
-	    attr_reader :elements
-
 	    include Geometry::DSL::Polyline
 
 	    def initialize(*args)
