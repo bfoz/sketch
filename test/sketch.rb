@@ -185,6 +185,5 @@ describe Sketch do
 	it "must have a minmax property" do
 	    subject.minmax.must_equal [Point[-3,-3], Point[5,7]]
 	end
-
     end
 end

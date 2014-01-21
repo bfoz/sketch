@@ -35,5 +35,11 @@ class Sketch
 	def layout(direction, *args, &block)
 	    Builder.new(Layout.new(direction, *args)).evaluate(&block).tap {|a| push a}
 	end
+
+	# Create a {Path}
+	# @return [Path]
+	def path(*args, &block)
+	    PathBuilder.new(*args).evaluate(&block).tap {|a| push a }
+	end
     end
 end

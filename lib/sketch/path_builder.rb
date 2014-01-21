@@ -8,14 +8,14 @@ class Sketch
 
 	attr_reader :elements
 
-	def initialize
-	    @elements = []
+	def initialize(*args)
+	    @elements = args || []
 	end
 
 	# Evaluate a block and return a new {Path}
 	# @return [Path]	A new {Path} initialized with the given block
 	def evaluate(&block)
-	    self.instance_eval &block
+	    self.instance_eval &block if block_given?
 	    Path.new(*@elements)
 	end
 

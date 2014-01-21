@@ -41,6 +41,21 @@ describe Sketch::DSL do
 	subject.last.radius.must_equal 5
     end
 
+    it 'must have a path command that takes a list of points' do
+	subject.path [1,2], [2,3]
+	subject.last.must_be_kind_of Geometry::Path
+	subject.last.elements.count.must_equal 1
+    end
+
+    it 'must have a path command that takes a block' do
+	subject.path do
+	    start_at    [0,0]
+	    move_to	[1,1]
+	end
+	subject.last.must_be_kind_of Geometry::Path
+	subject.last.elements.count.must_equal 1
+    end
+
     describe "when layout" do
 	describe "without spacing" do
 	    it "must do a horizontal layout" do

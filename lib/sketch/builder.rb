@@ -49,11 +49,6 @@ class Sketch
 	    @sketch.push Sketch::Builder.new(Group.new(*args)).evaluate(&block)
 	end
 
-	# Use the given block to build a {Path} and then append it to the {Sketch}
-	def path(&block)
-	    @sketch.push PathBuilder.new.evaluate(&block)
-	end
-
 	# Use the given block to build a {Polyline} and then append it to the {Sketch}
 	def polyline(&block)
 	    @sketch.push PolylineBuilder.new.evaluate(&block)
