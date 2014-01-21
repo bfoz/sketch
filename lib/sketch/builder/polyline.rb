@@ -44,7 +44,7 @@ class Sketch
 	    # @return [Geometry]    The appended object
 	    def push(arg)
 		@elements.push arg
-		arg
+		self
 	    end
 	end
     end
