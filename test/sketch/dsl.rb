@@ -84,4 +84,21 @@ describe Sketch::DSL do
 	end
     end
 
+    it 'must have a polygon command that takes a list of points' do
+	polygon = subject.polygon [0,0], [1,0], [1,1], [0,1]
+	polygon.must_be_kind_of Sketch::Polygon
+	subject.last.vertices.size.must_equal 4
+    end
+
+    it 'must have a polygon command that takes a block' do
+	subject.polygon do
+	    start_at    [0,0]
+	    move_to	    [1,0]
+	    move_to	    [1,1]
+	    move_to	    [0,1]
+	end
+	subject.last.must_be_kind_of Sketch::Polygon
+	subject.elements.size.must_equal 1
+	subject.last.vertices.size.must_equal 4
+    end
 end

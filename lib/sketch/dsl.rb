@@ -41,5 +41,16 @@ class Sketch
 	def path(*args, &block)
 	    PathBuilder.new(*args).evaluate(&block).tap {|a| push a }
 	end
+
+	# Create a Polygon with the given vertices, or using a block.
+	# See {PolygonBuilder}
+	def polygon(*args, &block)
+	    if block_given?
+		push PolygonBuilder.new.evaluate(&block)
+	    else
+		push Polygon.new(*args)
+	    end
+	    last
+	end
     end
 end

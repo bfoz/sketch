@@ -4,24 +4,8 @@ require 'sketch'
 describe Sketch do
     let(:sketch)    { Sketch.new }
 
-    it "should add a polygon" do
-	polygon = sketch.add_polygon [0,0], [1,0], [1,1], [0,1]
-	polygon.must_be_kind_of Sketch::Polygon
-	polygon.vertices.size.must_equal 4
-    end
-
-    it "should add a polygon using a block" do
-	polygon = sketch.add_polygon do
-	    vertex [0,0]
-	    point [1,0]
-	    edge [1,1], [0,1]
-	end
-	assert_kind_of(Sketch::Polygon, polygon)
-	assert_equal(1, sketch.elements.size)
-	assert_equal(4, polygon.vertices.size)
-    end
-
     it "should make a square polygon using turtle-like commands" do
+	skip
 	polygon = sketch.add_polygon do
 	    start_at [0,0]
 	    move_to [1,0]
@@ -40,6 +24,7 @@ describe Sketch do
     end
 
     it "should make another square polygon using turtle-like commands" do
+	skip
     	polygon = sketch.add_polygon do
 	    start_at [0,0]
 	    move [1,0]

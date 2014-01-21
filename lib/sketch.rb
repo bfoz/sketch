@@ -166,18 +166,6 @@ class Sketch
 	@elements.last
     end
 
-    # Create a Polygon with the given vertices, or using a block.
-    # See {PolygonBuilder}
-    def add_polygon(*args, &block)
-	if block_given?
-	    @elements.push PolygonBuilder.new.evaluate(&block)
-	    @elements.last
-	else
-	    @elements.push Polygon.new(*args)
-	    @elements.last
-	end
-    end
-
     # Create and add a {Triangle}
     # @param (see Triangle::new)
     def add_triangle(*args)
