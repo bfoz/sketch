@@ -45,8 +45,7 @@ describe Sketch do
 	    move_to	[2,1]
 	end
 	assert_equal(2, builder.elements.length)
-	assert_kind_of(Sketch::Point, builder.elements[0])
-	assert_kind_of(Sketch::Point, builder.elements[1])
+	builder.first.must_equal Point[0,0]
 	assert_equal(Point[2,1], builder.elements[1])
     end
 
@@ -72,10 +71,10 @@ describe Sketch do
 	assert_equal(Point[0,2], builder.elements[1])
     end
 
-    it "have a move_vertical_to command that makes a new vertex above the previous one" do
+    it "have a vertical_to command that makes a new vertex above the previous one" do
 	polygon = builder.evaluate do
 	    start_at		[0,0]
-	    move_vertical_to	2
+	    vertical_to	2
 	end
 	assert_equal(2, builder.elements.length)
 	assert_kind_of(Point, builder.elements[0])
@@ -83,14 +82,13 @@ describe Sketch do
 	assert_equal(Point[0,2], builder.elements[1])
     end
 
-    it "have a move_horizontal_to command that makes a new vertex with the same y-coordinate as the previous one" do
+    it "have a horizontal_to command that makes a new vertex with the same y-coordinate as the previous one" do
 	polygon = builder.evaluate do
 	    start_at		[0,0]
-	    move_horizontal_to	2
+	    horizontal_to	2
 	end
 	assert_equal(2, builder.elements.length)
-	assert_kind_of(Sketch::Point, builder.elements[0])
-	assert_kind_of(Sketch::Point, builder.elements[1])
+	builder.first.must_equal Point[0,0]
 	assert_equal(Point[2,0], builder.elements[1])
     end
 

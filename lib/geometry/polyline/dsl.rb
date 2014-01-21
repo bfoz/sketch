@@ -83,6 +83,24 @@ that returns the last vertex.
 		move_x distance
 	    end
 
+	    # Draw a vertical line to the given y-coordinate while preserving the
+	    # x-coordinate of the previous {Point}
+	    # @param y [Number] the y-coordinate to move to
+	    def vertical_to(y)
+		push Point[last.x, y]
+	    end
+	    alias :down_to :vertical_to
+	    alias :up_to :vertical_to
+
+	    # Draw a horizontal line to the given x-coordinate while preserving the
+	    # y-coordinate of the previous {Point}
+	    # @param x [Number] the x-coordinate to move to
+	    def horizontal_to(x)
+		push [x, last.y]
+	    end
+	    alias :left_to :horizontal_to
+	    alias :right_to :horizontal_to
+
 	    # @endgroup
 	end
     end

@@ -1,4 +1,5 @@
 require 'geometry'
+require 'geometry/polyline/dsl'
 require_relative 'point'
 
 class Sketch
@@ -34,6 +35,8 @@ The same thing, but more succint:
 
 	Edge = Geometry::Edge
 
+	include Geometry::Polyline::DSL
+
 	def initialize
 	    @elements = []
 	end
@@ -45,8 +48,25 @@ The same thing, but more succint:
 	    Polygon.new(*@elements)
 	end
 	def method_missing(method, *args, &block)
-	    p "missing #{method.to_s}"
 	    @self_before_instance_eval.send method, *args, &block
+	end
+
+	# @return [Point]   the first vertex of the {Polyline}
+	def first
+	    @elements.first
+	end
+
+	# @return [Point]   the last, or most recently added, vertex of the {Polyline}
+	def last
+	    @elements.last
+	end
+
+	# Push the given object
+	# @param [Geometry] arg A {Geometry} object to apped to the {Path}
+	# @return [Geometry]    The appended object
+	def push(arg)
+	    @elements.push arg
+	    arg
 	end
 
 	# @group Primitive creation
@@ -71,38 +91,6 @@ The same thing, but more succint:
 	# @endgroup
 
 	# @group Turtle-style commands:
-
-	# Specify a starting point. Only required if no other entities have been added yet
-	def start_at(point)
-	    vertex(point)
-	end
-
-	# Draw a line to the given point
-	def move_to(point)
-	    vertex(point)
-	end
-
-	# Move the specified distance along the X axis
-	def move_x(distance)
-	    vertex last_point + Point[distance, 0]
-	end
-
-	# Move the specified distance along the Y axis
-	def move_y(distance)
-	    vertex last_point + Point[0,distance];
-	end
-
-	# Draw a vertical line to the given y-coordinate while preserving the
-	# x-coordinate of the previous point
-	def move_vertical_to(y)
-	    vertex [last_point.x, y]
-	end
-
-	# Draw a horizontal line to the given x-coordinate while preserving the
-	# y-coordinate of the previous point
-	def move_horizontal_to(x)
-	    vertex [x, last_point.y]
-	end
 
 	# Turn left by the given number of degrees
 	def turn_left(angle)
@@ -138,34 +126,6 @@ The same thing, but more succint:
 	    radians = @direction * Math::PI / 180
 	    vertex(last_point + Vector[distance*Math.cos(radians),distance*Math.sin(radians)])
 	end
-
-	# @group Relative Movement
-
-	# Move the specified distance along the +Y axis
-	# @param [Number] distance  The distance to move in the +Y direction
-	def up(distance)
-	    move_y distance
-	end
-
-	# Move the specified distance along the -Y axis
-	# @param [Number] distance  The distance to move in the -Y direction
-	def down(distance)
-	    move_y -distance
-	end
-
-	# Move the specified distance along the -X axis
-	# @param [Number] distance  The distance to move in the -X direction
-	def left(distance)
-	    move_x -distance
-	end
-
-	# Move the specified distance along the +X axis
-	# @param [Number] distance  The distance to move in the +X direction
-	def right(distance)
-	    move_x distance
-	end
-
-	# @endgroup
 
 	# @endgroup
 
