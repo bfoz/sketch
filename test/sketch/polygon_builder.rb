@@ -18,17 +18,6 @@ describe Sketch do
 	assert_kind_of(Point, builder.elements[0])
     end
 
-    it "have a move command that makes a new vertex" do
-	polygon = builder.evaluate do
-	    start_at	[0,0]
-	    move	[1,1]
-	end
-	assert_equal(2, builder.elements.length)
-	assert_kind_of(Point, builder.elements[0])
-	assert_kind_of(Point, builder.elements[1])
-	assert_equal(Point[1,1], builder.elements[1])
-    end
-
     it "have a move_to command that makes a new vertex" do
 	polygon = builder.evaluate do
 	    start_at	[0,0]
