@@ -38,6 +38,50 @@ describe Sketch::Builder do
 	    builder.send :polygon
 	end
 
+	describe 'when defining an attribute' do
+	    let(:sketch) { builder.evaluate { attribute :attribute0 } }
+
+	    it 'must define the attribute' do
+		sketch.must_be :respond_to?, :attribute0
+		sketch.must_be :respond_to?, :attribute0=
+	    end
+
+	    it 'must have working accessors' do
+		sketch.attribute0 = 42
+		sketch.attribute0.must_equal 42
+	    end
+
+	    it 'must make the attribute available while evaluating a block' do
+		builder.evaluate do
+		    attribute :attribute1, 5
+		    attribute1.must_equal 5
+		    attribute1 = 7
+		    attribute1.must_equal 7
+		end
+	    end
+	end
+
+	describe 'when defining an attribute with a default value' do
+	    let(:sketch) { builder.evaluate { attribute :attribute0, 42 } }
+
+	    it 'must have the default value' do
+		sketch.attribute0.must_equal 42
+	    end
+
+	    it 'must not have the default value after setting to nil' do
+		sketch.attribute0 = nil
+		sketch.attribute0.wont_equal 42
+	    end
+	end
+
+	describe 'when defining a read only attribute with a default value' do
+	    let(:sketch) { builder.evaluate { attr_reader attribute0:42 } }
+
+	    it 'must have the default value' do
+		sketch.attribute0.must_equal 42
+	    end
+	end
+
 	describe "when evaluating a block" do
 	    describe "with simple geometry" do
 		before do

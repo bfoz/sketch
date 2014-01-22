@@ -15,6 +15,9 @@ class Sketch
 	# @endgroup
 
 	def initialize(sketch=nil, &block)
+	    @attribute_defaults = {}
+	    @attribute_getters = {}
+	    @attribute_setters = {}
 	    @sketch = sketch || Sketch.new
 	    evaluate(&block) if block_given?
 	end
@@ -44,6 +47,31 @@ class Sketch
 	    else
 		super if defined?(super)
 	    end
+	end
+
+	# Define an attribute with the given name and optional default value (or block)
+	# @param name [String]	The attribute's name
+	# @param value An optional default value
+	def define_attribute_reader(name, value=nil, &block)
+	    klass = @sketch.respond_to?(:define_method, true) ? @sketch : @sketch.class
+	    name, value = name.flatten if name.is_a?(Hash)
+	    if value || block_given?
+		@attribute_defaults[name] = value || block
+		@sketch.instance_variable_set('@' + name.to_s, value || instance_eval(&block))
+	    end
+	    klass.send :define_method, name do
+		instance_variable_get('@' + name.to_s)
+	    end
+	    @attribute_getters[name] = klass.instance_method(name)
+	end
+
+	def define_attribute_writer(name)
+	    klass = @sketch.respond_to?(:define_method, true) ? @sketch : @sketch.class
+	    method_name = name.to_s + '='
+	    klass.send :define_method, method_name do |value|
+		instance_variable_set '@' + name.to_s, value
+	    end
+	    @attribute_setters[method_name] = klass.instance_method(method_name)
 	end
 
 # @group Accessors
