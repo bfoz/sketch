@@ -32,16 +32,40 @@ that returns the last vertex.
 		first == last
 	    end
 
+	    # @group Absolute Movement
+
 	    # Draw a line to the given {Point}
 	    # @param [Point]    The {Point} to draw a line to
 	    def move_to(point)
 		push Point[point]
 	    end
 
+	    # Draw a vertical line to the given y-coordinate while preserving the
+	    # x-coordinate of the previous {Point}
+	    # @param y [Number] the y-coordinate to move to
+	    def vertical_to(y)
+		move_to Point[last.x, y]
+	    end
+	    alias :down_to :vertical_to
+	    alias :up_to :vertical_to
+
+	    # Draw a horizontal line to the given x-coordinate while preserving the
+	    # y-coordinate of the previous {Point}
+	    # @param x [Number] the x-coordinate to move to
+	    def horizontal_to(x)
+		move_to [x, last.y]
+	    end
+	    alias :left_to :horizontal_to
+	    alias :right_to :horizontal_to
+
+	    # @endgroup
+
+	    # @group Relative Movement
+
 	    # Move the specified distances along multiple axes simultaneously
 	    # @param distance [Vector]	the distance vector to move
 	    def move(*distance)
-		push (last + Point[*distance])
+		push (last || PointZero) + Point[*distance]
 	    end
 
 	    # Move the specified distance along the X axis
@@ -62,8 +86,6 @@ that returns the last vertex.
 		raise BuildError, "Can't specify a start point more than once" if first
 		push Point[point]
 	    end
-
-	    # @group Relative Movement
 
 	    # Move the specified distance along the +Y axis
 	    # @param [Number] distance  The distance to move in the +Y direction
@@ -88,24 +110,6 @@ that returns the last vertex.
 	    def right(distance)
 		move_x distance
 	    end
-
-	    # Draw a vertical line to the given y-coordinate while preserving the
-	    # x-coordinate of the previous {Point}
-	    # @param y [Number] the y-coordinate to move to
-	    def vertical_to(y)
-		push Point[last.x, y]
-	    end
-	    alias :down_to :vertical_to
-	    alias :up_to :vertical_to
-
-	    # Draw a horizontal line to the given x-coordinate while preserving the
-	    # y-coordinate of the previous {Point}
-	    # @param x [Number] the x-coordinate to move to
-	    def horizontal_to(x)
-		push [x, last.y]
-	    end
-	    alias :left_to :horizontal_to
-	    alias :right_to :horizontal_to
 
 	    # @endgroup
 	end
