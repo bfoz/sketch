@@ -3,6 +3,12 @@ module Geometry
 =begin
 An implementation of {http://en.wikipedia.org/wiki/Turtle_graphics Logo Turtle-style} commands
 
+This module is meant to be included in a class that provides the following methods:
+
+ distance
+ last
+ push
+
 == Examples
 Draw a square...
 
@@ -23,7 +29,7 @@ The same thing, but more succint:
         move [0,1]
         move [-1,0]
     end
- =end
+=end
 	module Turtle
 	    # Turn left by the given number of degrees
 	    def turn_left(angle)
@@ -54,10 +60,17 @@ The same thing, but more succint:
 	    end
 
 	    # Move the specified distance in the current direction
+	    # @param distance [Number]	the distance to move in the curren direction
 	    def forward(distance)
-		@direction ||= 0	# direction defaults to 0
-		radians = @direction * Math::PI / 180
-		push(last + Vector[distance*Math.cos(radians),distance*Math.sin(radians)])
+		push last + (direction * distance)
+	    end
+
+	    def left(distance)
+		push last + (Vector[-direction[1], direction[0]] * distance)
+	    end
+
+	    def right(distance)
+		push last + (Vector[direction[1], -direction[0]] * distance)
 	    end
 	end
     end

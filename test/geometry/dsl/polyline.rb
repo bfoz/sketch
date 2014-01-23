@@ -21,6 +21,10 @@ class Fake
     def push(arg)
 	@elements.push arg
     end
+
+    def repeat_to(to, count, &block)
+	{to: to, count: count}
+    end
 end
 
 describe Geometry::DSL::Polyline do
@@ -77,5 +81,24 @@ describe Geometry::DSL::Polyline do
 	it 'must have a right command' do
 	    subject.right(3).last.must_equal Point[4,2]
 	end
+    end
+
+    it 'must refuse to repeat without a block' do
+	-> { subject.repeat }.must_raise ArgumentError
+    end
+
+    it 'must repeat and count steps' do
+	subject.start_at [0,0]
+	subject.repeat(step:[0,1], count:4) {}.must_equal({to: Point[0,4], count:4})
+    end
+
+    it 'must repeat steps to a destination' do
+	subject.start_at [0,0]
+	subject.repeat(to:[0,4], step:1) {}.must_equal({to:Point[0,4], count:4})
+    end
+
+    it 'must repeat a count to a destination' do
+	subject.start_at [0,0]
+	subject.repeat(to:[0,4], count:4) {}.must_equal({to:Point[0,4], count:4})
     end
 end

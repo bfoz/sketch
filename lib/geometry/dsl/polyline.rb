@@ -112,6 +112,39 @@ that returns the last vertex.
 	    end
 
 	    # @endgroup
+
+	    # Repeat the given Turtle block until the end is reached
+	    # @overload(step, count)
+	    #   Repeat the given step size the specified count
+	    #   @param step [Array,Vector]  The step for each repeat. Must be a {Vector}, or {Vector}-like substance.
+	    #   @param count [Number]	The number of steps to take
+	    # @overload(to, count)
+	    #   Repeat the block the specified number of times
+	    #   @param to	[Point]	    the destination
+	    #	@param count	[Number]    the repetition count
+	    # @overload(to, step)
+	    #   Repeat along the line segment ending at *to* using the given step size
+	    #   @param to [Point]   the {Point} to stop at
+	    #   @param step [Number]	the step size
+	    def repeat(*args, &block)
+		raise ArgumentError unless block_given?
+
+		options, args = args.partition {|a| a.is_a? Hash}
+		options = options.reduce({}, :merge)
+
+		count = options.delete(:count)
+		to = Point[options.delete(:to)]
+		step = options.delete(:step)
+		if count and step
+		    raise TypeError, "When :count and :step are given, step must not be a Numeric" if step.is_a? Numeric
+		    to = last + (Point[step] * count)
+		elsif to and step
+		    raise TypeError, "When :to and :step are given, :step must be Numeric" unless step.is_a? Numeric
+		    count = (to - last).magnitude/step
+		end
+
+		repeat_to to, count, &block
+	    end
 	end
     end
 end
