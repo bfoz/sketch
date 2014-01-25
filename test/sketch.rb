@@ -186,4 +186,22 @@ describe Sketch do
 	    subject.minmax.must_equal [Point[-3,-3], Point[5,7]]
 	end
     end
+
+    it 'must move itself to the first quadrant' do
+	sketch = Sketch.new
+	sketch.push Geometry::Circle.new([0, 0], 3)
+
+	sketch.minmax.must_equal [Point[-3, -3], Point[3, 3]]	# Sanity check
+	sketch.first_quadrant!.minmax.must_equal [Point[0,0], Point[6,6]]
+    end
+
+    it 'must know if it is in the first quadrant' do
+	sketch = Sketch.new
+	sketch.push Geometry::Circle.new([0, 0], 3)
+	sketch.first_quadrant?.must_equal false
+
+	sketch = Sketch.new
+	sketch.push Geometry::Circle.new([3, 3], 3)
+	sketch.first_quadrant?.must_equal true
+    end
 end

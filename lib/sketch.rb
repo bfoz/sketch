@@ -122,6 +122,23 @@ class Sketch
 	self
     end
 
+    # Return a new {Sketch} that's been translated into the first quadrant
+    def first_quadrant
+	self.clone.first_quadrant!
+    end
+
+    # Translate the {Sketch} so that it lies entirely in the first quadrant
+    # @return [Sketch]	the translated {Sketch}
+    def first_quadrant!
+	self.transformation = Geometry::Transformation.new(origin:-self.min) unless first_quadrant?
+	self
+    end
+
+    # @return [Bool]	true if the {Sketch} lies entirely in the first quadrant
+    def first_quadrant?
+	self.min.all? {|a| a >= 0}
+    end
+
 # @group Geometry creation
 
     # Create and append a new {Arc} object
