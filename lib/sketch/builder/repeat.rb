@@ -38,7 +38,10 @@ class Sketch
 		    delta = to - last
 		    step = delta.normalize * delta.magnitude/count
 
-		    count.times do
+		    @first = true
+		    count.times do |i|
+			@last = (i >= (count - 1))
+
 			# On every eval, reset direction to point along the baseline
 			@direction = (to - @from).normalize
 			self.instance_exec step.magnitude, &block
@@ -46,6 +49,9 @@ class Sketch
 			# Return to the baseline after every block
 			current = current + step
 			push current unless last == current
+
+			# No longer the first time
+			@first = false
 		    end
 		end
 		@points
@@ -55,6 +61,16 @@ class Sketch
 	    #   http://www.dan-manges.com/blog/ruby-dsls-instance-eval-with-delegation
 	    def method_missing(method, *args, &block)
 		@self_before_instance_eval.send method, *args, &block
+	    end
+
+	    # @return [Bool]	true during the first repetition, otherwise false
+	    def first?
+		@first
+	    end
+
+	    # @return [Bool]	true during the final repetition, otherwise false
+	    def last?
+		@last
 	    end
 
 	    def last

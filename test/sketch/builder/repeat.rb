@@ -19,4 +19,27 @@ describe Sketch::Builder::Repeat do
 			[0,3], [-1,3], [0,3],
 			[0,4], [-1,4], [0,4]].map {|a| Point[a] }
     end
+
+    it 'must have a first? attribute that is only true for the first repetition' do
+	firsts = []
+	subject.build [0,4], 4 do |step|
+	    firsts.push first?
+	end
+	firsts.must_equal [true, false, false, false]
+    end
+
+    it 'must have a last? attribute that is only true for the last repetition' do
+	lasts = []
+	subject.build [0,4], 4 do |step|
+	    lasts.push last?
+	end
+	lasts.must_equal [false, false, false, true]
+    end
+
+    it 'must be first? and last? when repeating only once' do
+	subject.build [0,4], 1 do |step|
+	    first?.must_equal true
+	    last?.must_equal true
+	end
+    end
 end
