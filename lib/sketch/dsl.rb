@@ -42,6 +42,11 @@ class Sketch
 	end
     # @endgroup
 
+	# Create a {Group} with an optional transformation
+	def group(*args, &block)
+	    push build_group(*args, &block)
+	end
+
 	# Create a {RegularPolygon} with 6 sides
 	# @return [RegularPolygon]
 	def hexagon(options={})
@@ -68,11 +73,30 @@ class Sketch
 	# See {PolygonBuilder}
 	def polygon(*args, &block)
 	    if block_given?
-		push Builder::Polygon.new.evaluate(&block)
+		push build_polygon(&block)
 	    else
 		push Sketch::Polygon.new(*args)
 	    end
 	    last
 	end
+
+	# Create a {Polyline}
+	def polyline(&block)
+	    push build_polyline(&block)
+	end
+
+	# Create a {Rectangle} from the given arguments and append it to the {Sketch}
+	def rectangle(*args)
+	    push Rectangle.new(*args)
+	end
+
+	# Create a {Group} using the given translation
+	# @param [Point] point	The distance by which to translate the enclosed geometry
+	def translate(*args, &block)
+	    point = Point[*args]
+	    raise ArgumentError, 'Translation is limited to 2 dimensions' if point.size > 2
+	    group(origin:point, &block)
+	end
+
     end
 end

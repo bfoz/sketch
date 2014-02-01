@@ -13,6 +13,9 @@ class Fake
     def push(*args)
 	elements.push args.first
     end
+
+    def build_polygon(&block)
+    end
 end
 
 describe Sketch::DSL do
@@ -97,8 +100,5 @@ describe Sketch::DSL do
 	    move_to	    [1,1]
 	    move_to	    [0,1]
 	end
-	subject.last.must_be_kind_of Sketch::Polygon
-	subject.elements.size.must_equal 1
-	subject.last.vertices.size.must_equal 4
     end
 end

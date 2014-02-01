@@ -84,6 +84,10 @@ class Sketch
 
 # @endgroup
 
+# @group DSL support methods
+
+private
+
 	# Define a named parameter
 	# @param [Symbol] name	The name of the parameter
 	# @param [Proc] block	A block that evaluates to the value of the parameter
@@ -91,16 +95,19 @@ class Sketch
 	    @sketch.define_parameter name, &block
 	end
 
-	# @group Command handlers
-
-	# Create a {Group} with an optional name and transformation
-	def group(*args, &block)
-	    @sketch.push Sketch::Builder.new(Group.new(*args)).evaluate(&block)
+	# Create a {Group} with an optional transformation
+	def build_group(*args, &block)
+	    self.class.new(Group.new(*args)).evaluate(&block)
 	end
 
-	# Use the given block to build a {Polyline} and then append it to the {Sketch}
-	def polyline(&block)
-	    push Builder::Polyline.new.evaluate(&block)
+	# Use the given block to build a {Polyline}
+	def build_polyline(&block)
+	    Builder::Polyline.new.evaluate(&block)
+	end
+
+	# Build a {Polyline} from a block
+	def build_polygon(&block)
+	    Builder::Polygon.new.evaluate(&block)
 	end
 
 	# Append a new object (with optional transformation) to the {Sketch}
@@ -109,20 +116,6 @@ class Sketch
 	    @sketch.push *args
 	end
 
-	# Create a {Rectangle} from the given arguments and append it to the {Sketch}
-	def rectangle(*args)
-	    @sketch.push Rectangle.new(*args)
-	    last
-	end
-
-	# Create a {Group} using the given translation
-	# @param [Point] point	The distance by which to translate the enclosed geometry
-	def translate(*args, &block)
-	    point = Point[*args]
-	    raise ArgumentError, 'Translation is limited to 2 dimensions' if point.size > 2
-	    group(origin:point, &block)
-	end
-
-	# @endgroup
+# @endgroup
     end
 end
