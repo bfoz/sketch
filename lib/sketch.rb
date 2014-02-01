@@ -48,6 +48,12 @@ class Sketch
 	Rectangle.new(*minmax)
     end
 
+    # @!attribute [r] empty?
+    #   @return [Bool]  true is the {Sketch} contains no elements
+    def empty?
+	elements.empty?
+    end
+
     # @attribute [r] first
     #   @return [Geometry] first the first Geometry element of the {Sketch}
     def first

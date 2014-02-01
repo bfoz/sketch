@@ -10,6 +10,10 @@ describe Sketch do
 	sketch.must_be_kind_of Sketch
     end
 
+    it 'must be empty' do
+	sketch.must_be_empty
+    end
+
     it "should have a read only elements accessor" do
 	sketch.must_respond_to :elements
 	sketch.wont_respond_to :elements=
@@ -139,6 +143,10 @@ describe Sketch do
 	it "must have a size" do
 	    subject.size.must_equal Size[8,10]
 	    subject.size.must_be_instance_of(Size)
+	end
+
+	it 'must not be empty' do
+	    subject.wont_be_empty
 	end
 
 	describe "when the Sketch is empty" do
