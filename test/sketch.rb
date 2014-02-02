@@ -48,44 +48,10 @@ describe Sketch do
 	end
     end
 
-    it "should have a circle command that makes a new circle from a center point and radius" do
-	circle = sketch.add_circle [1,2], 3
-	circle.must_be_kind_of Geometry::Circle
-	circle.center.must_equal Point[1,2]
-	circle.radius.must_equal 3
-    end
-
-    it "should have a point creation method" do
-	point = sketch.add_point(5,6)
-	point.must_be_kind_of Sketch::Point
-	point.x.must_equal 5
-	point.y.must_equal 6
-    end
-
-    it "have a line creation method" do
-	line = sketch.add_line([5,6], [7,8])
-	line.must_be_kind_of Sketch::Line
-    end
-
-    it "have a rectangle creation method" do
-	rectangle = sketch.add_rectangle size:[10, 20]
-	rectangle.must_be_kind_of Geometry::Rectangle
-	rectangle.points.must_equal [Point[0,0], Point[0,20], Point[10,20], Point[10,0]]
-    end
-
-    it "should have a method for adding a square" do
-	square = sketch.add_square 10
-	square.must_be_kind_of Geometry::Square
-	square.width.must_equal 10
-	square.height.must_equal 10
-	square.center.must_equal Point[0,0]
-	square.points.must_equal [Point[-5,-5], Point[5,-5], Point[5,5], Point[-5,5]]
-    end
-
     describe "when constructed with a block" do
 	before do
 	    @sketch = Sketch.new do
-		add_circle [1,2], 3
+		push Geometry::Circle.new [1,2], 3
 	    end
 	end
 
@@ -98,23 +64,10 @@ describe Sketch do
     end
 
     describe "object creation" do
-	it "must create an Arc" do
-	    arc = sketch.add_arc center:[1,2], radius:3, start:0, end:90
-	    sketch.elements.last.must_be_kind_of Geometry::Arc
-	    arc.center.must_equal Point[1,2]
-	    arc.radius.must_equal 3
-	    arc.start_angle.must_equal 0
-	    arc.end_angle.must_equal 90
-	end
-
-	it "triangle" do
-	    triangle = sketch.add_triangle [0,0], [1,0], [0,1]
-	    sketch.elements.last.must_be_kind_of Geometry::Triangle
-	end
     end
 
     describe "properties" do
-	subject { Sketch.new { add_circle [1,-2], 3; add_circle([-1,2], 3) } }
+	subject { Sketch.new { push Geometry::Circle.new [1,-2], 3; push Geometry::Circle.new([-1,2], 3) } }
 
 	it "must have a bounds rectangle" do
 	    subject.bounds.must_equal Rectangle.new(from:[-4,-5], to:[4,5])
@@ -167,7 +120,7 @@ describe Sketch do
 
 	describe "when the Sketch is rotated" do
 	    subject do
-		s = Sketch.new { add_rectangle center:[0, -1.5], size:[6.5, 50.5] }
+		s = Sketch.new { push Geometry::Rectangle.new center:[0, -1.5], size:[6.5, 50.5] }
 		s.transformation = Geometry::Transformation.new(angle:Math::PI/2)
 		s
 	    end

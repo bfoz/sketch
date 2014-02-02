@@ -42,9 +42,21 @@ class Sketch
 	end
     # @endgroup
 
-	# Create a {Group} with an optional transformation
-	def group(*args, &block)
-	    push build_group(*args, &block)
+    # @group Geometry generation
+
+	# Create and append a new {Arc} object
+	# @param (see Arc#initialize)
+	# @return [Arc]
+	def arc(*args)
+	    push Arc.new(*args)
+	end
+
+	# Create and append a new {Circle} object given a center point and radius
+	# @param	[Point]	    center  The circle's center point
+	# @param	[Number]    radius  The circle's radius
+	# @return	[Circle]    A new {Circle}
+	def circle(*args)
+	    push Circle.new(*args)
 	end
 
 	# Create a {RegularPolygon} with 6 sides
@@ -54,13 +66,9 @@ class Sketch
 	    Geometry::RegularPolygon.new(options).tap {|a| push a }
 	end
 
-	# Create a layout
-	# @param direction [Symbol] The layout direction (either :horizontal or :vertical)
-	# @option options [Symbol] align    :top, :bottom, :left, or :right
-	# @option options [Number] spacing  The spacing between each element
-	# @return [Group]
-	def layout(direction, *args, &block)
-	    Builder.new(Layout.new(direction, *args)).evaluate(&block).tap {|a| push a}
+	# Create a Line using any arguments that work for {Geometry::Line}
+	def line(*args)
+	    push Geometry::Line[*args]
 	end
 
 	# Create a {Path}
@@ -88,6 +96,34 @@ class Sketch
 	# Create a {Rectangle} from the given arguments and append it to the {Sketch}
 	def rectangle(*args)
 	    push Rectangle.new(*args)
+	end
+
+	# Create a Square with sides of the given length
+	# @param [Numeric] length	The length of the sides of the square
+	def square(length)
+	    push Geometry::CenteredSquare.new [0,0], length
+	end
+
+	# Create and add a {Triangle}
+	# @param (see Triangle::new)
+	def triangle(*args)
+	    push Geometry::Triangle.new *args
+	end
+
+    # @endgroup
+
+	# Create a {Group} with an optional transformation
+	def group(*args, &block)
+	    push build_group(*args, &block)
+	end
+
+	# Create a layout
+	# @param direction [Symbol] The layout direction (either :horizontal or :vertical)
+	# @option options [Symbol] align    :top, :bottom, :left, or :right
+	# @option options [Number] spacing  The spacing between each element
+	# @return [Group]
+	def layout(direction, *args, &block)
+	    Builder.new(Layout.new(direction, *args)).evaluate(&block).tap {|a| push a}
 	end
 
 	# Create a {Group} using the given translation

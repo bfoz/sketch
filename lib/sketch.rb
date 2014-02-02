@@ -144,58 +144,6 @@ class Sketch
     def first_quadrant?
 	self.min.all? {|a| a >= 0}
     end
-
-# @group Geometry creation
-
-    # Create and append a new {Arc} object
-    # @param (see Arc#initialize)
-    # @return [Arc]
-    def add_arc(*args)
-	@elements.push(Arc.new(*args)).last
-    end
-
-    # Create and append a new {Circle} object given a center point and radius
-    # @param	[Point]	    center  The circle's center point
-    # @param	[Number]    radius  The circle's radius
-    # @return	[Circle]    A new {Circle}
-    def add_circle(*args)
-	@elements.push Circle.new(*args)
-	@elements.last
-    end
-
-    # Create a Line using any arguments that work for {Geometry::Line}
-    def add_line(*args)
-	@elements.push Line[*args]
-	@elements.last
-    end
-
-    # Create a Point with any arguments that work for {Geometry::Point}
-    def add_point(*args)
-	@elements.push Point[*args]
-	@elements.last
-    end
-
-    # Create a {Rectangle}
-    def add_rectangle(*args)
-	@elements.push Rectangle.new(*args)
-	@elements.last
-    end
-
-    # Create a Square with sides of the given length
-    # @param [Numeric] length	The length of the sides of the square
-    def add_square(length)
-	push Geometry::CenteredSquare.new [0,0], length
-	@elements.last
-    end
-
-    # Create and add a {Triangle}
-    # @param (see Triangle::new)
-    def add_triangle(*args)
-	push Geometry::Triangle.new *args
-    end
-
-# @endgroup
-
 end
 
 def Sketch(&block)
