@@ -16,8 +16,14 @@ class Sketch
     Rectangle = Geometry::Rectangle
     Square = Geometry::Square
 
-    def initialize(&block)
+    def initialize(*args, &block)
 	@elements = []
+
+	options, args = args.partition {|a| a.is_a? Hash}
+	options = options.reduce({}, :merge)
+
+	@transformation = options.delete(:transformation) || Geometry::Transformation.new(options)
+
 	instance_eval(&block) if block_given?
     end
 
