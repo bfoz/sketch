@@ -123,7 +123,22 @@ class Sketch
 	# @option options [Number] spacing  The spacing between each element
 	# @return [Group]
 	def layout(direction, *args, &block)
-	    Builder.new(Layout.new(direction, *args)).evaluate(&block).tap {|a| push a}
+	    raise ArgumentError, "direction must be either :horizontal or :vertical, not #{direction}" unless [:horizontal, :vertical].include?(direction)
+
+	    options, _ = args.partition {|a| a.is_a? Hash}
+	    options = options.reduce({}, :merge)
+
+	    alignment = options.delete(:align) || options.delete(:alignment)
+	    spacing = options.delete(:spacing) || 0
+
+	    if alignment
+		case direction
+		    when :horizontal then raise ArgumentError, "When direction is :horizontal, alignment must be either :top or :bottom, not #{alignment}" unless [:bottom, :top].include?(alignment)
+		    when :vertical then raise ArgumentError, "When direction is :vertical, alignment must be either :left or :right, not #{alignment}" unless [:left, :right].include?(alignment)
+		end
+	    end
+
+	    push build_layout(direction, alignment, spacing, *args, &block)
 	end
 
 	# Create a {Group} using the given translation

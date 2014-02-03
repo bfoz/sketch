@@ -100,6 +100,15 @@ private
 	    self.class.new(Group.new(*args)).evaluate(&block)
 	end
 
+	# Create a {Layout}
+	# @param direction [Symbol] The layout direction (either :horizontal or :vertical)
+	# @option options [Symbol] alignment    :top, :bottom, :left, or :right
+	# @option options [Number] spacing  The spacing between each element
+	# @return [Group]
+	def build_layout(direction, alignment, spacing, *args, &block)
+	    self.class.new(Layout.new(direction, *args)).evaluate(&block)
+	end
+
 	# Use the given block to build a {Polyline}
 	def build_polyline(&block)
 	    Builder::Polyline.new.evaluate(&block)

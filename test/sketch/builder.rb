@@ -172,6 +172,68 @@ describe Sketch::Builder do
 	end
     end
 
+    describe 'when adding a layout' do
+	describe 'when spacing is not given' do
+	    it 'must do a horizontal layout' do
+		subject.layout :horizontal do
+		    rectangle from:[0,0], to:[5,5]
+		    rectangle from:[0,0], to:[6,6]
+		end
+
+		layout = subject.first
+		layout.must_be_instance_of Sketch::Layout
+
+		layout.first.must_be_kind_of Geometry::Rectangle
+		layout.last.must_be_kind_of Sketch::Group
+		layout.last.translation.must_equal Point[5,0]
+	    end
+
+	    it 'must do a vertical layout' do
+		subject.layout :vertical do
+		    rectangle from:[0,0], to:[5,5]
+		    rectangle from:[0,0], to:[6,6]
+		end
+
+		layout = subject.first
+		layout.must_be_instance_of Sketch::Layout
+
+		layout.first.must_be_kind_of Geometry::Rectangle
+		layout.last.must_be_kind_of Sketch::Group
+		layout.last.translation.must_equal Point[0,5]
+	    end
+	end
+
+	describe 'when spacing is non-zero' do
+	    it 'must do a horizontal layout' do
+		subject.layout :horizontal, spacing:1 do
+		    rectangle from:[0,0], to:[5,5]
+		    rectangle from:[0,0], to:[6,6]
+		end
+
+		layout = subject.first
+		layout.must_be_instance_of Sketch::Layout
+
+		layout.first.must_be_kind_of Geometry::Rectangle
+		layout.last.must_be_kind_of Sketch::Group
+		layout.last.translation.must_equal Point[6,0]
+	    end
+
+	    it 'must do a vertical layout' do
+		subject.layout :vertical, spacing:1 do
+		    rectangle from:[0,0], to:[5,5]
+		    rectangle from:[0,0], to:[6,6]
+		end
+
+		layout = subject.first
+		layout.must_be_instance_of Sketch::Layout
+
+		layout.first.must_be_kind_of Geometry::Rectangle
+		layout.last.must_be_kind_of Sketch::Group
+		layout.last.translation.must_equal Point[0,6]
+	    end
+	end
+    end
+
     describe "when adding a translation" do
 	before do
 	    subject.translate [1,2] { circle diameter:1 }

@@ -29,7 +29,7 @@ class Sketch
 	    options, args = args.partition {|a| a.is_a? Hash}
 	    options = options.reduce({}, :merge)
 
-	    @alignment = options.delete(:align)
+	    @alignment = options.delete(:align) || options.delete(:alignment)
 	    @spacing = options.delete(:spacing) || 0
 
 	    @direction = direction

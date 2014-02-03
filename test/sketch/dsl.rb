@@ -14,6 +14,9 @@ class Fake
 	elements.push args.first
     end
 
+    def build_layout(*args, &block)
+    end
+
     def build_polygon(&block)
     end
 end
@@ -60,6 +63,14 @@ describe Sketch::DSL do
 	subject.last.radius.must_equal 5
     end
 
+    it 'must have a layout command' do
+	subject.layout :horizontal do; end
+    end
+
+    it 'must have a layout command that checks the alignment argument' do
+	-> { subject.layout :horizontal, alignment: :left do; end }.must_raise ArgumentError
+    end
+
     it 'must have a line command' do
 	subject.line [5,6], [7,8]
 	subject.last.must_be_kind_of Geometry::Line
@@ -78,34 +89,6 @@ describe Sketch::DSL do
 	end
 	subject.last.must_be_kind_of Geometry::Path
 	subject.last.elements.count.must_equal 1
-    end
-
-    describe "when layout" do
-	describe "without spacing" do
-	    it "must do a horizontal layout" do
-		subject.layout :horizontal do
-		    rectangle from:[0,0], to:[5,5]
-		    rectangle from:[0,0], to:[6,6]
-		end
-
-		group = subject.first
-		group.must_be_instance_of Sketch::Layout
-
-		group.first.must_be_kind_of Geometry::Rectangle
-		group.last.must_be_kind_of Sketch::Group
-	    end
-
-	    it "must do a vertical layout" do
-	    end
-	end
-
-	describe "with spacing" do
-	    it "must do a horizontal layout" do
-	    end
-
-	    it "must do a vertical layout" do
-	    end
-	end
     end
 
     it 'must have a polygon command that takes a list of points' do
