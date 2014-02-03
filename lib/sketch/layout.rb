@@ -23,16 +23,19 @@ class Sketch
 	# @return [Number] spacing  spacing to add between each element
 	attr_reader :spacing
 
+	# @param direction  [Symbol]	the layout direction
+	# @param alignment  [Symbol]	the alignment to use in the direction perpendicular to the layout direction
+	# @param spacing    [Number]	the space to leave between each element
 	def initialize(direction=:horizontal, *args)
-	    super
-
 	    options, args = args.partition {|a| a.is_a? Hash}
 	    options = options.reduce({}, :merge)
 
-	    @alignment = options.delete(:align) || options.delete(:alignment)
+	    @alignment = options.delete(:align) || options.delete(:alignment) || :left
+	    @direction = direction || :horizontal
 	    @spacing = options.delete(:spacing) || 0
 
-	    @direction = direction
+	    args += [options] if options and not options.empty?
+	    super *args
 	end
 
 	# Any pushed element that doesn't have a transformation property will be wrapped in a {Group}.

@@ -18,7 +18,7 @@ describe Sketch::Layout do
 	end
 
 	describe "with a transformation" do
-	    subject { Sketch::Layout.new origin:[1,2] }
+	    subject { Sketch::Layout.new :horizontal, origin:[1,2] }
 
 	    it "must set the transformation property" do
 		subject.transformation.must_equal Geometry::Transformation.new(origin:Point[1,2])

@@ -22,7 +22,11 @@ class Sketch
 	options, args = args.partition {|a| a.is_a? Hash}
 	options = options.reduce({}, :merge)
 
-	@transformation = options.delete(:transformation) || Geometry::Transformation.new(options)
+	transformation_options = options.select {|k,v| [:angle, :move, :origin, :rotate, :scale, :x, :y, :z].include? k }
+	@transformation = options.delete(:transformation) || Geometry::Transformation.new(transformation_options)
+
+	options = options.reject {|k,v| [:angle, :move, :origin, :rotate, :scale, :x, :y, :z].include? k }
+	options.each { |k,v| send("#{k}=", v); options.delete(k) }
 
 	instance_eval(&block) if block_given?
     end
