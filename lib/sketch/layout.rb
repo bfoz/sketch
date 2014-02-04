@@ -26,12 +26,12 @@ class Sketch
 	# @param direction  [Symbol]	the layout direction
 	# @param alignment  [Symbol]	the alignment to use in the direction perpendicular to the layout direction
 	# @param spacing    [Number]	the space to leave between each element
-	def initialize(direction=:horizontal, *args)
+	def initialize(*args)
 	    options, args = args.partition {|a| a.is_a? Hash}
 	    options = options.reduce({}, :merge)
 
-	    @alignment = options.delete(:align) || options.delete(:alignment) || :left
-	    @direction = direction || :horizontal
+	    @direction = options.delete(:direction) || :horizontal
+	    @alignment = options.delete(:align) || options.delete(:alignment) || ((@direction == :horizontal) ? :bottom : :left)
 	    @spacing = options.delete(:spacing) || 0
 
 	    args += [options] if options and not options.empty?
@@ -57,7 +57,6 @@ class Sketch
 
 		last.transformation = Geometry::Transformation.new(origin:offset) + last.transformation
 	    end
-
 	    self
 	end
 

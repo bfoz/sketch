@@ -175,7 +175,7 @@ describe Sketch::Builder do
     describe 'when adding a layout' do
 	describe 'when spacing is not given' do
 	    it 'must do a horizontal layout' do
-		subject.layout :horizontal do
+		subject.layout direction: :horizontal do
 		    rectangle from:[0,0], to:[5,5]
 		    rectangle from:[0,0], to:[6,6]
 		end
@@ -189,7 +189,7 @@ describe Sketch::Builder do
 	    end
 
 	    it 'must do a vertical layout' do
-		subject.layout :vertical do
+		subject.layout direction: :vertical do
 		    rectangle from:[0,0], to:[5,5]
 		    rectangle from:[0,0], to:[6,6]
 		end
@@ -205,7 +205,7 @@ describe Sketch::Builder do
 
 	describe 'when spacing is non-zero' do
 	    it 'must do a horizontal layout' do
-		subject.layout :horizontal, spacing:1 do
+		subject.layout direction: :horizontal, spacing:1 do
 		    rectangle from:[0,0], to:[5,5]
 		    rectangle from:[0,0], to:[6,6]
 		end
@@ -219,7 +219,7 @@ describe Sketch::Builder do
 	    end
 
 	    it 'must do a vertical layout' do
-		subject.layout :vertical, spacing:1 do
+		subject.layout direction: :vertical, spacing:1 do
 		    rectangle from:[0,0], to:[5,5]
 		    rectangle from:[0,0], to:[6,6]
 		end

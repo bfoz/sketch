@@ -122,14 +122,15 @@ class Sketch
 	# @option options [Symbol] align    :top, :bottom, :left, or :right
 	# @option options [Number] spacing  The spacing between each element
 	# @return [Group]
-	def layout(direction, *args, &block)
-	    raise ArgumentError, "direction must be either :horizontal or :vertical, not #{direction}" unless [:horizontal, :vertical].include?(direction)
-
+	def layout(*args, &block)
 	    options, _ = args.partition {|a| a.is_a? Hash}
 	    options = options.reduce({}, :merge)
 
 	    alignment = options.delete(:align) || options.delete(:alignment)
+	    direction = options.delete(:direction) || :horizontal
 	    spacing = options.delete(:spacing) || 0
+
+	    raise ArgumentError, "direction must be either :horizontal or :vertical, not #{direction}" unless [:horizontal, :vertical].include?(direction)
 
 	    if alignment
 		case direction

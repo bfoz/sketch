@@ -1,4 +1,4 @@
-require 'geometry/transformation'
+require_relative '../sketch'
 
 =begin
 {Group} is a container for grouping elements of a {Sketch} with an optional

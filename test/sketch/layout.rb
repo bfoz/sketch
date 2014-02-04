@@ -3,6 +3,7 @@ require 'sketch/layout'
 
 describe Sketch::Layout do
     Group = Sketch::Group
+    Point = Geometry::Point
 
     describe "when constructed" do
 	describe "with no arguments" do
@@ -18,7 +19,7 @@ describe Sketch::Layout do
 	end
 
 	describe "with a transformation" do
-	    subject { Sketch::Layout.new :horizontal, origin:[1,2] }
+	    subject { Sketch::Layout.new direction: :horizontal, origin:[1,2] }
 
 	    it "must set the transformation property" do
 		subject.transformation.must_equal Geometry::Transformation.new(origin:Point[1,2])
@@ -27,7 +28,7 @@ describe Sketch::Layout do
     end
 
     describe "when horizontal" do
-	subject { Sketch::Layout.new :horizontal }
+	subject { Sketch::Layout.new direction: :horizontal }
 
 	it "must layout primitive objects" do
 	    subject.push Geometry::Rectangle.new from:[0,0], to:[5,5]
@@ -54,8 +55,23 @@ describe Sketch::Layout do
 	    subject.last.transformation.translation.must_equal Point[5,0]
 	end
 
+	it 'must layout Sketches' do
+	    sketch = Sketch.new
+	    sketch.push Geometry::Rectangle.new from:[0,0], to:[5,5]
+	    subject.push sketch
+
+	    sketch = Group.new
+	    sketch.push Geometry::Rectangle.new from:[0,0], to:[6,6]
+	    subject.push sketch
+
+	    subject.elements.count.must_equal 2
+
+	    subject.first.transformation.translation.must_be_nil
+	    subject.last.transformation.translation.must_equal Point[5,0]
+	end
+
 	describe "with spacing" do
-	    subject { Sketch::Layout.new :horizontal, spacing:1 }
+	    subject { Sketch::Layout.new direction: :horizontal, spacing:1 }
 
 	    it "must add space between the elements" do
 		group = Group.new.push Geometry::Rectangle.new from:[0,0], to:[5,5]
@@ -67,10 +83,25 @@ describe Sketch::Layout do
 		subject.first.transformation.translation.must_be_nil
 		subject.last.transformation.translation.must_equal Point[6,0]
 	    end
+
+	    it 'must layout Sketches' do
+		sketch = Sketch.new
+		sketch.push Geometry::Rectangle.new from:[-1,-1], to:[5,5]
+		subject.push sketch
+
+		sketch = Group.new
+		sketch.push Geometry::Rectangle.new from:[0,0], to:[6,6]
+		subject.push sketch
+
+		subject.elements.count.must_equal 2
+
+		subject.first.transformation.translation.must_equal Point[1,1]
+		subject.last.transformation.translation.must_equal Point[7,0]
+	    end
 	end
 
 	describe "when bottom aligned" do
-	    subject { Sketch::Layout.new :horizontal, align: :bottom }
+	    subject { Sketch::Layout.new direction: :horizontal, align: :bottom }
 
 	    it "must bottom align the elements" do
 		subject.push Group.new.push Geometry::Rectangle.new from:[0,-1], to:[5,5]
@@ -79,10 +110,25 @@ describe Sketch::Layout do
 		subject.first.transformation.translation.must_equal Point[0,1]
 		subject.last.transformation.translation.must_equal Point[5,1]
 	    end
+
+	    it 'must layout Sketches' do
+		sketch = Sketch.new
+		sketch.push Geometry::Rectangle.new from:[0,0], to:[5,5]
+		subject.push sketch
+
+		sketch = Group.new
+		sketch.push Geometry::Rectangle.new from:[0,0], to:[6,6]
+		subject.push sketch
+
+		subject.elements.count.must_equal 2
+
+		subject.first.transformation.translation.must_be_nil
+		subject.last.transformation.translation.must_equal Point[5,0]
+	    end
 	end
 
 	describe "when top aligned" do
-	    subject { Sketch::Layout.new :horizontal, align: :top }
+	    subject { Sketch::Layout.new direction: :horizontal, align: :top }
 
 	    it "must top align the elements" do
 		subject.push Group.new.push Geometry::Rectangle.new from:[0,0], to:[5,5]
@@ -97,7 +143,7 @@ describe Sketch::Layout do
     end
 
     describe "when vertical" do
-	subject { Sketch::Layout.new :vertical }
+	subject { Sketch::Layout.new direction: :vertical }
 
 	it "must layout groups" do
 	    group = Group.new
@@ -113,7 +159,7 @@ describe Sketch::Layout do
 	end
 
 	describe "with spacing" do
-	    subject { Sketch::Layout.new :vertical, spacing:1 }
+	    subject { Sketch::Layout.new direction: :vertical, spacing:1 }
 
 	    it "must add space between the elements" do
 		group = Group.new.push Geometry::Rectangle.new from:[0,0], to:[5,5]
@@ -128,7 +174,7 @@ describe Sketch::Layout do
 	end
 
 	describe "when left aligned" do
-	    subject { Sketch::Layout.new :vertical, align: :left }
+	    subject { Sketch::Layout.new direction: :vertical, align: :left }
 
 	    it "must left align the elements" do
 		subject.push Group.new.push Geometry::Rectangle.new from:[-1,0], to:[5,5]
@@ -151,7 +197,7 @@ describe Sketch::Layout do
 	end
 
 	describe "when right aligned" do
-	    subject { Sketch::Layout.new :vertical, align: :right }
+	    subject { Sketch::Layout.new direction: :vertical, align: :right }
 
 	    it "must right align the elements" do
 		subject.push Group.new.push Geometry::Rectangle.new from:[0,0], to:[5,5]

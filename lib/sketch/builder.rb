@@ -106,7 +106,10 @@ private
 	# @option options [Number] spacing  The spacing between each element
 	# @return [Group]
 	def build_layout(direction, alignment, spacing, *args, &block)
-	    self.class.new(Layout.new(direction, *args)).evaluate(&block)
+	    options, args = args.partition {|a| a.is_a? Hash}
+	    options = options.reduce({direction:direction, alignment:alignment, spacing:spacing}, :merge)
+	    args += [options]
+	    self.class.new(Layout.new(*args)).evaluate(&block)
 	end
 
 	# Use the given block to build a {Polyline}
