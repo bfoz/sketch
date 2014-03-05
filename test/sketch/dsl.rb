@@ -15,6 +15,7 @@ class Fake
     end
 
     def build_layout(*args, &block)
+	Sketch::Layout.new *args, &block
     end
 
     def build_polygon(&block)
@@ -69,6 +70,18 @@ describe Sketch::DSL do
 
     it 'must have a layout command that checks the alignment argument' do
 	-> { subject.layout :horizontal, alignment: :left do; end }.must_raise ArgumentError
+    end
+
+    it 'must have a shortcut for horizontal layouts' do
+	subject.horizontal do; end
+	subject.last.must_be_kind_of Sketch::Layout
+	subject.last.direction.must_equal :horizontal
+    end
+
+    it 'must have a shortcut for vertical layouts' do
+	subject.vertical do; end
+	subject.last.must_be_kind_of Sketch::Layout
+	subject.last.direction.must_equal :vertical
     end
 
     it 'must have a line command' do

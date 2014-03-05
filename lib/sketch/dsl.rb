@@ -117,6 +117,16 @@ class Sketch
 	    push build_group(*args, &block)
 	end
 
+	# Create a {Group} using the given translation
+	# @param [Point] point	The distance by which to translate the enclosed geometry
+	def translate(*args, &block)
+	    point = Point[*args]
+	    raise ArgumentError, 'Translation is limited to 2 dimensions' if point.size > 2
+	    group(origin:point, &block)
+	end
+
+    # @group Simple Layouts
+
 	# Create a layout
 	# @param direction [Symbol] The layout direction (either :horizontal or :vertical)
 	# @option options [Symbol] align    :top, :bottom, :left, or :right
@@ -142,13 +152,21 @@ class Sketch
 	    push build_layout(direction, alignment, spacing, *args, &block)
 	end
 
-	# Create a {Group} using the given translation
-	# @param [Point] point	The distance by which to translate the enclosed geometry
-	def translate(*args, &block)
-	    point = Point[*args]
-	    raise ArgumentError, 'Translation is limited to 2 dimensions' if point.size > 2
-	    group(origin:point, &block)
+	def horizontal(*args, &block)
+	    options, _ = args.partition {|a| a.is_a? Hash}
+	    options = options.reduce({}, :merge)
+	    options[:direction] = :horizontal
+
+	    layout options, &block
 	end
 
+	def vertical(*args, &block)
+	    options, _ = args.partition {|a| a.is_a? Hash}
+	    options = options.reduce({}, :merge)
+	    options[:direction] = :vertical
+
+	    layout options, &block
+	end
+    # @endgroup
     end
 end
