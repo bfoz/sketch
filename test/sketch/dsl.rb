@@ -134,6 +134,14 @@ describe Sketch::DSL do
 	subject.last.points.must_equal [Point[-5,-5], Point[5,-5], Point[5,5], Point[-5,5]]
     end
 
+    it 'must create a Square from an origin and a size' do
+	subject.square origin:[1,2], size:3
+	subject.last.must_be_kind_of Geometry::Square
+	subject.last.height.must_equal 3
+	subject.last.width.must_equal 3
+	subject.last.origin.must_equal Point[1,2]
+    end
+
     it 'must have a triangle command' do
 	subject.triangle [0,0], [1,0], [0,1]
 	subject.last.must_be_kind_of Geometry::Triangle

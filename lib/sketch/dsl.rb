@@ -99,9 +99,16 @@ class Sketch
 	end
 
 	# Create a Square with sides of the given length
-	# @param [Numeric] length	The length of the sides of the square
-	def square(length)
-	    push Geometry::CenteredSquare.new [0,0], length
+	# @param (see Geometry::Square)
+	def square(*args)
+	    options, args = args.partition {|a| a.is_a? Hash}
+	    options = options.reduce({}, :merge)
+
+	    if args.length == 1
+		options[:size] = args.shift
+	    end
+
+	    push Geometry::Square.new *args, options
 	end
 
 	# Create and add a {Triangle}
