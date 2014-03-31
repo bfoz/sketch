@@ -34,16 +34,19 @@ class Sketch
 		    current = last
 		    to = Point[to]  # just in case
 
+		    baseline_direction = (to - @from).normalize
+
 		    # Determine the step size from the destination and the repetition count
 		    delta = to - last
-		    step = delta.normalize * delta.magnitude/count
+		    step = delta/count
 
 		    @first = true
 		    count.times do |i|
 			@last = (i >= (count - 1))
 
 			# On every eval, reset direction to point along the baseline
-			@direction = (to - @from).normalize
+			@direction = baseline_direction
+
 			self.instance_exec step.magnitude, &block
 
 			# Return to the baseline after every block
