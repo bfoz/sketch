@@ -1,7 +1,7 @@
 require 'minitest/autorun'
 require 'sketch/dsl'
 
-class Fake
+class SketchFake
     attr_accessor :elements
 
     include Sketch::DSL
@@ -12,6 +12,10 @@ class Fake
 
     def push(*args)
 	elements.push args.first
+    end
+
+    def build_group(*args, &block)
+	args
     end
 
     def build_layout(*args, &block)
@@ -25,7 +29,7 @@ end
 describe Sketch::DSL do
     Point = Geometry::Point
 
-    subject { Fake.new }
+    subject { SketchFake.new }
 
     it "must have a first command that returns the first element" do
 	point = Geometry::Point[1,2]
@@ -145,5 +149,44 @@ describe Sketch::DSL do
     it 'must have a triangle command' do
 	subject.triangle [0,0], [1,0], [0,1]
 	subject.last.must_be_kind_of Geometry::Triangle
+    end
+
+    describe 'when repeating' do
+	it 'must ignore spacing when count is 1' do
+	    subject.repeat spacing:5, count:1 do
+		square size:1
+	    end
+	    subject.elements.size.must_equal 1
+	    subject.elements.must_equal [[{:origin=>Point[0, 0]}]]
+	end
+
+	it 'must repeat along the X axis centered on the origin' do
+	    subject.repeat spacing:5, count:2 do
+		square size:1
+	    end
+	    subject.elements.size.must_equal 2
+	    subject.elements.must_equal [[{:origin=>Point[-2.5, 0]}],
+					 [{:origin=>Point[2.5, 0]}]]
+	end
+
+	it 'must repeat along the Y axis centered on the origin' do
+	    subject.repeat step:[0,5], count:2 do
+		square size:1
+	    end
+	    subject.elements.size.must_equal 2
+	    subject.elements.must_equal [[{:origin=>Point[0, -2.5]}],
+					 [{:origin=>Point[0, 2.5]}]]
+	end
+
+	it 'must create a grid centered on the origin when count is a number' do
+	    subject.repeat count:2, step:[5,5] do
+		square size:1
+	    end
+	    subject.elements.size.must_equal 4
+	    subject.elements.must_equal [[{:origin=>Point[-2.5, -2.5]}],
+					 [{:origin=>Point[ 2.5, -2.5]}],
+					 [{:origin=>Point[-2.5,  2.5]}],
+					 [{:origin=>Point[ 2.5,  2.5]}]]
+	end
     end
 end

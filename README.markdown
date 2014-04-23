@@ -84,3 +84,14 @@ Sketch.new do
     end
 end
 ```
+
+### Repetition
+Do you ever get tired of making the same square over and over again?
+
+```ruby
+Sketch.new do
+    repeat count:2, step:[5,5] do
+        square size:1
+    end
+end
+```

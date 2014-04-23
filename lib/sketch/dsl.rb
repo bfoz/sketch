@@ -132,6 +132,30 @@ class Sketch
 	    group(origin:point, &block)
 	end
 
+	# Repeat the given block of geometry a given number of times with the specified spacing
+	# @param count [Number,Array]	the number of repetitions along each repetition axis
+	def repeat(options={}, &block)
+	    count = options.delete(:count) || 2
+	    step = Point[options.delete(:spacing) || options.delete(:step)]
+
+	    # Force step to be two-dimensional
+	    step = Point[step.first, 0] if step.size < 2
+
+
+	    start_point = -step*(count-1)/2
+	    if step.all? {|a| a != 0}
+		count.times do |y|
+		    count.times do |x|
+			translate(start_point + Point[step.x * x, step.y * y], &block)
+		    end
+		end
+	    else
+		count.times do |i|
+		    translate(start_point + step*i, &block)
+		end
+	    end
+	end
+
     # @group Simple Layouts
 
 	# Create a layout
