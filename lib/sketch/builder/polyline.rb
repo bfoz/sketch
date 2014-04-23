@@ -1,3 +1,4 @@
+require 'geometry'
 require 'geometry/dsl/polyline'
 require_relative 'repeat'
 
