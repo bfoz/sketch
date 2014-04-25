@@ -189,4 +189,46 @@ describe Sketch::DSL do
 					 [{:origin=>Point[ 2.5,  2.5]}]]
 	end
     end
+
+    describe 'when translating a block' do
+	it 'must default to no translation if no arguments are given' do
+	    subject.translate() {}
+	    subject.elements.must_equal [[{:origin=>Point[0,0]}]]
+	end
+
+	it 'must accept 2 bare Point components' do
+	    subject.translate(1, 2) {}
+	    subject.elements.must_equal [[{:origin=>Point[1,2]}]]
+	end
+
+	it 'must accept an x-translation value' do
+	    subject.translate(1) {}
+	    subject.elements.must_equal [[{:origin=>Point[1,0]}]]
+	end
+
+	it 'must accept a Point argument' do
+	    subject.translate Point[1,2] {}
+	    subject.elements.must_equal [[{:origin=>Point[1,2]}]]
+	end
+
+	it 'must accept a short Point argument' do
+	    subject.translate Point[1] {}
+	    subject.elements.must_equal [[{:origin=>Point[1,0]}]]
+	end
+
+	it 'must accept x and y keyword arguments' do
+	    subject.translate(x:1, y:2) {}
+	    subject.elements.must_equal [[{:origin=>Point[1,2]}]]
+	end
+
+	it 'must accept an x keyword argument' do
+	    subject.translate(x:1) {}
+	    subject.elements.must_equal [[{:origin=>Point[1,0]}]]
+	end
+
+	it 'must accept a y keyword argument' do
+	    subject.translate(y:2) {}
+	    subject.elements.must_equal [[{:origin=>Point[0,2]}]]
+	end
+    end
 end

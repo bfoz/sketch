@@ -125,9 +125,18 @@ class Sketch
 	end
 
 	# Create a {Group} using the given translation
-	# @param [Point] point	The distance by which to translate the enclosed geometry
-	def translate(*args, &block)
-	    point = Point[*args]
+	# @overload translate(x, y, &block)
+	#   @param x [Number]	the x-component of the desired translation
+	#   @param y [Number]	the y-component of the desired translation
+	# @overload translate(point, &block)
+	#   @param point [Point]	The distance by which to translate the enclosed geometry
+	# @overload translate(options, &block)
+	#   @option options :x [Number]	the x-component of the desired translation
+	#   @option options :y [Number]	the y-component of the desired translation
+	def translate(x=nil, y=nil, **options, &block)
+	    point = Point[x || options[:x] || 0, y || options[:y] || 0]
+	    point = Point[point.first, 0] if point.size < 2
+
 	    raise ArgumentError, 'Translation is limited to 2 dimensions' if point.size > 2
 	    group(origin:point, &block)
 	end
