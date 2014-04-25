@@ -25,14 +25,6 @@ describe Sketch::Builder do
 	    builder.sketch.elements.last.must_be_kind_of Rectangle
 	end
 
-	describe "command handlers" do
-	    it "must recognize the rectangle command" do
-		builder.rectangle([1,2], [3,4])
-		builder.last.must_be_instance_of(Rectangle)
-		builder.sketch.elements.last.must_be_kind_of Rectangle
-	    end
-	end
-
 	it 'must have a polygon command' do
 	    builder.must_be :respond_to?, :polygon
 	    builder.evaluate { polygon do; end }

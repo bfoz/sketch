@@ -94,8 +94,28 @@ class Sketch
 	end
 
 	# Create a {Rectangle} from the given arguments and append it to the {Sketch}
-	def rectangle(*args)
-	    push Rectangle.new(*args)
+	# @overload rectangle(:origin, :size)
+	#   @param :origin  [Point] the lower left corner of the {Rectangle}
+	#   @param :size    [Size]  the width and height of the {Rectangle}
+	# @overload rectangle(:center, :size)
+	#   @param :center  [Point] the center of the {Rectangle}
+	#   @param :size    [Size]  the width and height of the {Rectangle}
+	# @overload rectangle(:x, :y, :size)
+	#   @param :x	    [Point] the left side of the {Rectangle}
+	#   @param :y	    [Point] the bottom side of the {Rectangle}
+	#   @param :size    [Size]  the width and height of the {Rectangle}
+	# @overload rectangle(:top, :left, :bottom, :right, :size)
+	#   @note Don't pass all of the arguments at the same time, or the {Rectangle} will be over-constrained
+	#   @param :top	    [Point] the top side of the {Rectangle}
+	#   @param :left    [Point] the left side of the {Rectangle}
+	#   @param :bottom  [Point] the bottom side of the {Rectangle}
+	#   @param :right   [Point] the right side of the {Rectangle}
+	#   @param :size    [Size]  the width and height of the {Rectangle}
+	def rectangle(**options)
+	    options[:origin] ||= Point[options.delete(:x) || options.delete(:left) || 0, options.delete(:y) || options.delete(:bottom) || 0]
+	    options[:origin] = Point[options.key?(:right) ? (options.delete(:right) - options[:size][0]) : options[:origin][0],
+				     options.key?(:top) ? (options.delete(:top) - options[:size][1]) : options[:origin][1]]
+	    push Rectangle.new(**options)
 	end
 
 	# Create a Square with sides of the given length

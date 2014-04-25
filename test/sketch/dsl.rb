@@ -123,12 +123,6 @@ describe Sketch::DSL do
 	end
     end
 
-    it 'must have a rectangle command' do
-	subject.rectangle size:[10,20]
-	subject.last.must_be_kind_of Geometry::Rectangle
-	subject.last.points.must_equal [Point[0,0], Point[0,20], Point[10,20], Point[10,0]]
-    end
-
     it 'must have a square command' do
 	subject.square 10
 	subject.last.must_be_kind_of Geometry::Square
@@ -149,6 +143,73 @@ describe Sketch::DSL do
     it 'must have a triangle command' do
 	subject.triangle [0,0], [1,0], [0,1]
 	subject.last.must_be_kind_of Geometry::Triangle
+    end
+
+    describe 'rectangle' do
+	it 'must accept a size argument' do
+	    subject.rectangle size:[10,20]
+	    subject.last.must_be_kind_of Geometry::Rectangle
+	    subject.last.points.must_equal [Point[0,0], Point[0,20], Point[10,20], Point[10,0]]
+	end
+
+	it 'must require a size argument' do
+	    ->{ subject.rectangle }.must_raise ArgumentError
+	end
+
+	it 'must accept a center argument' do
+	    skip "Rational comparison is broken"
+	    subject.rectangle center:[0,0], size:[10,20]
+	    subject.last.must_be_kind_of Geometry::Rectangle
+	    subject.last.points.must_equal [Point[-5, -10], Point[-5,10], Point[5,10], Point[5,-10]]
+	end
+
+	it 'must accept an origin argument' do
+	    subject.rectangle origin:[1,2], size:[10,20]
+	    subject.last.must_be_kind_of Geometry::Rectangle
+	    subject.last.points.must_equal [Point[1,2], Point[1,22], Point[11,22], Point[11,2]]
+	end
+
+	it 'must accept an argument named x' do
+	    subject.rectangle x:1, size:[10,20]
+	    subject.last.must_be_kind_of Geometry::Rectangle
+	    subject.last.points.must_equal [Point[1,0], Point[1,20], Point[11,20], Point[11,0]]
+	end
+
+	it 'must accept an argument named y' do
+	    subject.rectangle y:1, size:[10,20]
+	    subject.last.must_be_kind_of Geometry::Rectangle
+	    subject.last.points.must_equal [Point[0,1], Point[0,21], Point[10,21], Point[10,1]]
+	end
+
+	it 'must accept arguments named x and y' do
+	    subject.rectangle x:1, y:2, size:[10,20]
+	    subject.last.must_be_kind_of Geometry::Rectangle
+	    subject.last.points.must_equal [Point[1,2], Point[1,22], Point[11,22], Point[11,2]]
+	end
+
+	it 'must start on the left' do
+	    subject.rectangle left:1, size:[10,20]
+	    subject.last.must_be_kind_of Geometry::Rectangle
+	    subject.last.points.must_equal [Point[1,0], Point[1,20], Point[11,20], Point[11,0]]
+	end
+
+	it 'must start at the bottom' do
+	    subject.rectangle bottom:1, size:[10,20]
+	    subject.last.must_be_kind_of Geometry::Rectangle
+	    subject.last.points.must_equal [Point[0,1], Point[0,21], Point[10,21], Point[10,1]]
+	end
+
+	it 'must stop on the right' do
+	    subject.rectangle right:1, size:[10,20]
+	    subject.last.must_be_kind_of Geometry::Rectangle
+	    subject.last.points.must_equal [Point[-9,0], Point[-9,20], Point[1,20], Point[1,0]]
+	end
+
+	it 'must stop at the top' do
+	    subject.rectangle top:1, size:[10,20]
+	    subject.last.must_be_kind_of Geometry::Rectangle
+	    subject.last.points.must_equal [Point[0,-19], Point[0,1], Point[10,1], Point[10,-19]]
+	end
     end
 
     describe 'when repeating' do
