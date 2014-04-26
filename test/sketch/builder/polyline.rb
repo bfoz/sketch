@@ -23,4 +23,13 @@ describe Sketch::Builder::Polyline do
 	    polygon.must_equal Geometry::Polygon.new [3,5], [3,6], [4,6], [4,5]
 	end
     end
+
+    it 'must have a default starting point' do
+	polyline = builder.evaluate do
+	    up	    1
+	    right	    1
+	    down	    1
+	end
+	polyline.must_equal Geometry::Polyline.new [0,0], [0,1], [1,1], [1,0]
+    end
 end

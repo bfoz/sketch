@@ -65,19 +65,20 @@ that returns the last vertex.
 	    # Move the specified distances along multiple axes simultaneously
 	    # @param distance [Vector]	the distance vector to move
 	    def move(*distance)
-		push (last || PointZero) + Point[*distance]
+		push Point.zero unless last
+		push last + Point[*distance]
 	    end
 
 	    # Move the specified distance along the X axis
 	    # @param [Number] distance  The distance to move
 	    def move_x(distance)
-		push (last || PointZero) + Point[distance, 0]
+		move Point[distance, 0]
 	    end
 
 	    # Move the specified distance along the Y axis
 	    # @param [Number] distance  The distance to move
 	    def move_y(distance)
-		push (last || PointZero) + Point[0, distance]
+		move Point[0, distance]
 	    end
 
 	    # Specify a starting point. Can't be specified twice, and only required if no other entities have been added.

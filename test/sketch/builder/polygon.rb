@@ -10,6 +10,16 @@ describe Sketch do
 	assert_kind_of(Sketch::Polygon, polygon)
     end
 
+
+    it 'must have a default starting point' do
+	polygon = subject.evaluate do
+	    up	    1
+	    right	    1
+	    down	    1
+	end
+	polygon.must_equal Geometry::Polygon.new [0,0], [0,1], [1,1], [1,0]
+    end
+
     it 'must handle multiple repeats' do
 	skip
 	subject.evaluate do

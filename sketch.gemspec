@@ -19,5 +19,5 @@ Gem::Specification.new do |s|
 
     s.required_ruby_version = '~> 2'
 
-  s.add_dependency 'geometry', '~> 6.2'
+  s.add_dependency 'geometry', '> 6.2'
 end
