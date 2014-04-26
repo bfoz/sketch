@@ -9,8 +9,10 @@ class Sketch
 	class Polyline
 	    include Geometry::DSL::Polyline
 
-	    def initialize(*args)
+	    # @option origin [Point]    all {Points} are relative to this {Point}
+	    def initialize(*args, **options)
 		@elements = args || []
+		@origin = options.delete(:origin) || Point.zero
 	    end
 
 	    # Evaluate a block and return a new {Path}
@@ -21,6 +23,7 @@ class Sketch
 		if block_given?
 		    @self_before_instance_eval = eval "self", block.binding
 		    self.instance_eval &block
+		    @elements.map! {|point| point + @origin }
 		end
 		Sketch::Polyline.new(*@elements)
 	    end
@@ -41,11 +44,11 @@ class Sketch
 		@elements.last
 	    end
 
-	    # Push the given object
-	    # @param [Geometry] arg A {Geometry} object to apped to the {Path}
-	    # @return [Geometry]    The appended object
-	    def push(arg)
-		@elements.push arg
+	    # Append a vertex
+	    # @param point [Point]	the {Point} to append
+	    # @return [Polyline]
+	    def push(point)
+		@elements.push point
 		self
 	    end
 

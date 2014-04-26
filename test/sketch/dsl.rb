@@ -22,7 +22,8 @@ class SketchFake
 	Sketch::Layout.new *args, &block
     end
 
-    def build_polygon(&block)
+    def build_polygon(*args, &block)
+	args
     end
 end
 
@@ -108,18 +109,21 @@ describe Sketch::DSL do
 	subject.last.elements.count.must_equal 1
     end
 
-    it 'must have a polygon command that takes a list of points' do
-	polygon = subject.polygon [0,0], [1,0], [1,1], [0,1]
-	polygon.must_be_kind_of Sketch::Polygon
-	subject.last.vertices.size.must_equal 4
-    end
+    describe 'Polygon' do
+	it 'must accept a list of points' do
+	    polygon = subject.polygon [0,0], [1,0], [1,1], [0,1]
+	    polygon.must_be_kind_of Sketch::Polygon
+	    subject.last.vertices.size.must_equal 4
+	end
 
-    it 'must have a polygon command that takes a block' do
-	subject.polygon do
-	    start_at    [0,0]
-	    move_to	    [1,0]
-	    move_to	    [1,1]
-	    move_to	    [0,1]
+	it 'must accept a block' do
+	    subject.polygon(){}
+	    subject.elements.last.must_equal [{}]
+	end
+
+	it 'must accept an origin and a block' do
+	    subject.polygon(origin:[1,2]) {}
+	    subject.elements.last.must_equal [{origin:[1,2]}]
 	end
     end
 

@@ -4,7 +4,19 @@ require_relative 'builder/polygon'
 require_relative 'layout'
 
 class Sketch
-    # Syntactic sugar for building a {Sketch}
+=begin rdoc
+Syntactic sugar for building a {Sketch}
+
+== Requirements
+This module is intended to be included into a builder class that provides some
+infrastructure. The builder class must provide an elements getter as well as
+the following methods.
+    - push(element)
+    - define_attribute_reader(name, value, &block)
+    - define_attribute_writer(name)
+    - build_polygon(origin:nil, &block)
+    - build_polyline
+=end
     module DSL
 	# Define a new read-write attribute. An optional default value can be supplied as either an argument, or as a block. The block will be evaluated the first time the attribute is accessed.
 	# @param name [String,Symbol]	The new attribute's name
@@ -79,9 +91,10 @@ class Sketch
 
 	# Create a Polygon with the given vertices, or using a block.
 	# See {PolygonBuilder}
-	def polygon(*args, &block)
+	# @option origin [Point]    everything inside the block argument is relative to this {Point}
+	def polygon(*args, **options, &block)
 	    if block_given?
-		push build_polygon(&block)
+		push build_polygon(**options, &block)
 	    else
 		push Sketch::Polygon.new(*args)
 	    end

@@ -8,6 +8,10 @@ describe Sketch::Builder do
 
     subject { Builder.new }
 
+    it 'must implement the Sketch DSL' do
+	subject.must_be_kind_of Sketch::DSL
+    end
+
     describe "when initialized without a block" do
 	let(:builder) { Builder.new }
 
@@ -23,12 +27,6 @@ describe Sketch::Builder do
 	it "must have a push method that pushes elements" do
 	    builder.push Rectangle.new size:[5, 5]
 	    builder.sketch.elements.last.must_be_kind_of Rectangle
-	end
-
-	it 'must have a polygon command' do
-	    builder.must_be :respond_to?, :polygon
-	    builder.evaluate { polygon do; end }
-	    builder.send :polygon
 	end
 
 	describe 'when defining an attribute' do
@@ -267,6 +265,46 @@ describe Sketch::Builder do
 	it "must set the sub-group properties" do
 	    outer_group = subject.sketch.elements.first
 	    outer_group.elements.first.translation.must_equal Point[3,4]
+	end
+    end
+
+    describe 'build_polygon' do
+	before do
+	    subject.singleton_class.send(:public, :build_polygon)
+	end
+
+	it 'must build a polygon from a block' do
+	    subject.build_polygon(){}.must_be_kind_of Geometry::Polygon
+	end
+
+	it 'must accept an origin argument' do
+	    polygon = subject.build_polygon(origin:[1,2]) do
+		start_at    [2,3]
+		up	    1
+		right	    1
+		down	    1
+	    end
+	    polygon.must_equal Geometry::Polygon.new [3,5], [3,6], [4,6], [4,5]
+	end
+    end
+
+    describe 'build_polyline' do
+	before do
+	    subject.singleton_class.send(:public, :build_polyline)
+	end
+
+	it 'must build a polygon from a block' do
+	    subject.build_polyline(){}.must_be_kind_of Geometry::Polyline
+	end
+
+	it 'must accept an origin argument' do
+	    polyline = subject.build_polyline(origin:[1,2]) do
+		start_at    [2,3]
+		up	    1
+		right	    1
+		down	    1
+	    end
+	    polyline.must_equal Geometry::Polyline.new [3,5], [3,6], [4,6], [4,5]
 	end
     end
 end
