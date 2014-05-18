@@ -176,24 +176,32 @@ the following methods.
 
 	# Repeat the given block of geometry a given number of times with the specified spacing
 	# @param count [Number,Array]	the number of repetitions along each repetition axis
+	# @param step	[Number,Array]	the step size between repetitions
 	def repeat(options={}, &block)
 	    count = options.delete(:count) || 2
-	    step = Point[options.delete(:spacing) || options.delete(:step)]
+	    step = options.delete(:spacing) || options.delete(:step)
 
-	    # Force step to be two-dimensional
-	    step = Point[step.first, 0] if step.size < 2
+	    raise ArgumentError, 'Must provide a step argument' unless step
 
-
-	    start_point = -step*(count-1)/2
-	    if step.all? {|a| a != 0}
-		count.times do |y|
-		    count.times do |x|
-			translate(start_point + Point[step.x * x, step.y * y], &block)
-		    end
+	    step = if step.is_a?(Numeric)
+		if count.is_a?(Numeric)
+		    Point[step, 0]
+		else
+		    Point[step, step]
 		end
 	    else
-		count.times do |i|
-		    translate(start_point + step*i, &block)
+		Point[Array.new(2) {|i| step[i]}]	# Force step to be two-dimensional
+	    end
+
+	    # Don't count along any axis that doesn't have a step value
+	    if count.is_a?(Numeric)
+		count = step.map {|s| s.zero? ? 1 : count}.to_a
+	    end
+
+	    start_point = Point[-step.x * (count.first-1)/2, -step.y * (count.last-1)/2]
+	    count.last.times do |y|
+		count.first.times do |x|
+		    translate(start_point + Point[step.x * x, step.y * y], &block)
 		end
 	    end
 	end

@@ -218,7 +218,7 @@ describe Sketch::DSL do
 
     describe 'when repeating' do
 	it 'must ignore spacing when count is 1' do
-	    subject.repeat spacing:5, count:1 do
+	    subject.repeat step:5, count:1 do
 		square size:1
 	    end
 	    subject.elements.size.must_equal 1
@@ -226,7 +226,7 @@ describe Sketch::DSL do
 	end
 
 	it 'must repeat along the X axis centered on the origin' do
-	    subject.repeat spacing:5, count:2 do
+	    subject.repeat step:5, count:2 do
 		square size:1
 	    end
 	    subject.elements.size.must_equal 2
@@ -252,6 +252,19 @@ describe Sketch::DSL do
 					 [{:origin=>Point[ 2.5, -2.5]}],
 					 [{:origin=>Point[-2.5,  2.5]}],
 					 [{:origin=>Point[ 2.5,  2.5]}]]
+	end
+
+	it 'must accept a count for each axis' do
+	    subject.repeat count:[3,2], step:[5,5] do
+		square size:1
+	    end
+	    subject.elements.size.must_equal 6
+	    subject.elements.must_equal [[{:origin=>Point[-5, -2.5]}],
+					 [{:origin=>Point[ 0, -2.5]}],
+					 [{:origin=>Point[ 5, -2.5]}],
+					 [{:origin=>Point[ -5, 2.5]}],
+					 [{:origin=>Point[  0, 2.5]}],
+					 [{:origin=>Point[  5, 2.5]}]]
 	end
     end
 
