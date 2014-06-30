@@ -201,9 +201,20 @@ the following methods.
 	    end
 
 	    start_point = origin + Point[-step.x * (count.first-1)/2, -step.y * (count.last-1)/2]
-	    count.last.times do |y|
-		count.first.times do |x|
-		    translate(start_point + Point[step.x * x, step.y * y], &block)
+
+	    if block_given?
+		count.last.times do |y|
+		    count.first.times do |x|
+			translate(start_point + Point[step.x * x, step.y * y], &block)
+		    end
+		end
+	    else
+		Enumerator.new do |yielder|
+		    count.last.times do |y|
+			count.first.times do |x|
+			    yielder.yield start_point + [step.x * x, step.y * y]
+			end
+		    end
 		end
 	    end
 	end

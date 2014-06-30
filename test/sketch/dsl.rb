@@ -277,6 +277,14 @@ describe Sketch::DSL do
 					 [{:origin=>Point[1-2.5, 2+2.5]}],
 					 [{:origin=>Point[1+2.5, 2+2.5]}]]
 	end
+
+	it 'must return an enumerator when no block is given' do
+	    subject.repeat(origin:[1,2], count:2, step:[5,5]).must_be_kind_of Enumerator
+	    subject.repeat(origin:[1,2], count:2, step:[5,5]).to_a.must_equal [Point[1-2.5, 2-2.5],
+									       Point[1+2.5, 2-2.5],
+									       Point[1-2.5, 2+2.5],
+									       Point[1+2.5, 2+2.5]]
+	end
     end
 
     describe 'when translating a block' do
