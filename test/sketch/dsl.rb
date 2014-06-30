@@ -266,6 +266,17 @@ describe Sketch::DSL do
 					 [{:origin=>Point[  0, 2.5]}],
 					 [{:origin=>Point[  5, 2.5]}]]
 	end
+
+	it 'must have an origin' do
+	    subject.repeat origin:[1,2], count:2, step:[5,5] do
+		square size:1
+	    end
+	    subject.elements.size.must_equal 4
+	    subject.elements.must_equal [[{:origin=>Point[1-2.5, 2-2.5]}],
+					 [{:origin=>Point[1+2.5, 2-2.5]}],
+					 [{:origin=>Point[1-2.5, 2+2.5]}],
+					 [{:origin=>Point[1+2.5, 2+2.5]}]]
+	end
     end
 
     describe 'when translating a block' do
