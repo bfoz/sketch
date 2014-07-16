@@ -44,6 +44,7 @@ that returns the last vertex.
 	    # x-coordinate of the previous {Point}
 	    # @param y [Number] the y-coordinate to move to
 	    def vertical_to(y)
+		push Point.zero unless last
 		move_to Point[last.x, y]
 	    end
 	    alias :down_to :vertical_to
@@ -53,6 +54,7 @@ that returns the last vertex.
 	    # y-coordinate of the previous {Point}
 	    # @param x [Number] the x-coordinate to move to
 	    def horizontal_to(x)
+		push Point.zero unless last
 		move_to [x, last.y]
 	    end
 	    alias :left_to :horizontal_to
