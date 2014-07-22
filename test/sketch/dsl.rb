@@ -45,6 +45,22 @@ describe Sketch::DSL do
 	subject.last.must_be_same_as point
     end
 
+    it 'must have an annulus command' do
+	subject.annulus center:[1,2], inner_radius:5, radius:10
+	subject.last.must_be_kind_of Geometry::Annulus
+	subject.last.center.must_equal Point[1,2]
+	subject.last.inner_radius.must_equal 5
+	subject.last.radius.must_equal 10
+    end
+
+    it 'must have a ring command that is an alias of the annulus command' do
+	subject.ring center:[1,2], inner_radius:5, radius:10
+	subject.last.must_be_kind_of Geometry::Annulus
+	subject.last.center.must_equal Point[1,2]
+	subject.last.inner_radius.must_equal 5
+	subject.last.radius.must_equal 10
+    end
+
     it 'must have an arc command' do
 	subject.arc center:[1,2], radius:3, start:0, end:90
 	subject.last.must_be_kind_of Geometry::Arc

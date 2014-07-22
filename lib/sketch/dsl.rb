@@ -56,6 +56,13 @@ the following methods.
 
     # @group Geometry generation
 
+	# Create and append a new {Annulus}
+	# @return [Annulus]
+	def annulus(*args, **options)
+	    push Geometry::Annulus.new(*args, **options)
+	end
+	alias :ring :annulus
+
 	# Create and append a new {Arc} object
 	# @param (see Arc#initialize)
 	# @return [Arc]
