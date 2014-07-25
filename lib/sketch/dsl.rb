@@ -192,7 +192,7 @@ the following methods.
 
 	    raise ArgumentError, 'Must provide a step argument' unless step
 
-	    step = if step.is_a?(Numeric)
+	    step = if step.is_a?(Numeric) || !step.respond_to?(:[])
 		if count.is_a?(Numeric)
 		    Point[step, 0]
 		else
