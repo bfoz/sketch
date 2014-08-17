@@ -283,8 +283,8 @@ describe Sketch::DSL do
 					 [{:origin=>Point[  5, 2.5]}]]
 	end
 
-	it 'must have an origin' do
-	    subject.repeat origin:[1,2], count:2, step:[5,5] do
+	it 'must have a center' do
+	    subject.repeat center:[1,2], count:2, step:[5,5] do
 		square size:1
 	    end
 	    subject.elements.size.must_equal 4
@@ -295,8 +295,8 @@ describe Sketch::DSL do
 	end
 
 	it 'must return an enumerator when no block is given' do
-	    subject.repeat(origin:[1,2], count:2, step:[5,5]).must_be_kind_of Enumerator
-	    subject.repeat(origin:[1,2], count:2, step:[5,5]).to_a.must_equal [Point[1-2.5, 2-2.5],
+	    subject.repeat(center:[1,2], count:2, step:[5,5]).must_be_kind_of Enumerator
+	    subject.repeat(center:[1,2], count:2, step:[5,5]).to_a.must_equal [Point[1-2.5, 2-2.5],
 									       Point[1+2.5, 2-2.5],
 									       Point[1-2.5, 2+2.5],
 									       Point[1+2.5, 2+2.5]]

@@ -182,11 +182,11 @@ the following methods.
 	end
 
 	# Repeat the given block of geometry a given number of times with the specified spacing
-	# @param origin [Point]		where to start the repetition
+	# @param center [Point]		the center of the repetition
 	# @param count [Number,Array]	the number of repetitions along each repetition axis
 	# @param step	[Number,Array]	the step size between repetitions
-	def repeat(origin:Geometry::Point.zero, **options, &block)
-	    origin = Point[origin] unless origin.is_a?(Point)
+	def repeat(center:Geometry::Point.zero, **options, &block)
+	    center = Point[center] unless center.is_a?(Point)
 	    count = options.delete(:count) || 2
 	    step = options.delete(:spacing) || options.delete(:step)
 
@@ -207,7 +207,7 @@ the following methods.
 		count = step.map {|s| s.zero? ? 1 : count}.to_a
 	    end
 
-	    start_point = origin + Point[-step.x * (count.first-1)/2, -step.y * (count.last-1)/2]
+	    start_point = center + Point[-step.x * (count.first-1)/2, -step.y * (count.last-1)/2]
 
 	    if block_given?
 		count.last.times do |y|
