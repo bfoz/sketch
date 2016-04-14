@@ -114,6 +114,7 @@ the following methods.
 	end
 
 	# Create a {Rectangle} from the given arguments and append it to the {Sketch}
+	#   @param [Number]	    corner_radius  the radius to use for corner rounds. 0 and nil both disable rounding.
 	# @overload rectangle(:origin, :size)
 	#   @param :origin  [Point] the lower left corner of the {Rectangle}
 	#   @param :size    [Size]  the width and height of the {Rectangle}
@@ -131,24 +132,111 @@ the following methods.
 	#   @param :bottom  [Point] the bottom side of the {Rectangle}
 	#   @param :right   [Point] the right side of the {Rectangle}
 	#   @param :size    [Size]  the width and height of the {Rectangle}
-	def rectangle(**options)
+	def rectangle(corner_radius:nil, **options)
 	    options[:origin] ||= Point[options.delete(:x) || options.delete(:left) || 0, options.delete(:y) || options.delete(:bottom) || 0]
 	    options[:origin] = Point[options.key?(:right) ? (options.delete(:right) - options[:size][0]) : options[:origin][0],
 				     options.key?(:top) ? (options.delete(:top) - options[:size][1]) : options[:origin][1]]
-	    push Rectangle.new(**options)
+
+	    if corner_radius and corner_radius.nonzero?
+		arc_radius = corner_radius
+		rectangle = Geometry::Rectangle.new(**options)
+
+		# Clip the arc radius to fit the rectangle
+		arc_radius = rectangle.width/2 if 2*arc_radius > rectangle.width
+		arc_radius = rectangle.height/2 if 2*arc_radius > rectangle.height
+
+		multipliers = [[1,1], [1,-1], [-1,-1], [-1,1]]
+		arc_centers = rectangle.points.zip(multipliers).map {|point, (a, b)| point + Point[a*arc_radius, b*arc_radius] }
+
+		# Normally we do things in clockwise order around here. That's why
+		#  self.points returns the points in clockwise order. This method
+		#  goes counterclockwise because Arc is always counterclockwise.
+		#  That makes it hard to create a clockwise Path that auto-joins
+		#  the segments properly.
+		point0, point3, point2, point1 = rectangle.points
+		arc_centers[1], arc_centers[3] = arc_centers[3], arc_centers[1]
+		components = []
+		# The bottom edge, shortened by 2*corner_radius
+		bottom_left = Point[arc_centers.first.x, point0.y]
+		bottom_right = Point[arc_centers[1].x, point1.y]
+		components.push bottom_left
+		# Bottom-right arc
+		right_bottom = Point[point1.x, arc_centers[1].y]
+		components.push Geometry::Arc.new(center:arc_centers[1], start:bottom_right, end:right_bottom)
+		# Upper-right arc
+		right_top = Point[point2.x, arc_centers[2].y]
+		top_right = Point[arc_centers[2].x, point2.y]
+		components.push Geometry::Arc.new(center:arc_centers[2], start:right_top, end:top_right)
+		# Upper-left arc
+		top_left = Point[arc_centers.last.x, point3.y]
+		left_top = Point[point3.x, arc_centers.last.y]
+		components.push Geometry::Arc.new(center:arc_centers.last, start:top_left, end:left_top)
+		# Bottom-left arc
+		left_bottom = Point[point0.x, arc_centers.first.y]
+		components.push Geometry::Arc.new(center:arc_centers.first, start:left_bottom, end:bottom_left)
+		# Left side
+		components.push bottom_left
+		push Geometry::Path.new(*components)
+	    else
+		push Geometry::Rectangle.new(**options)
+	    end
 	end
 
-	# Create a Square with sides of the given length
-	# @param (see Geometry::Square)
-	def square(*args)
-	    options, args = args.partition {|a| a.is_a? Hash}
-	    options = options.reduce({}, :merge)
+	# @overload new(size, :corner_radius)
+	#  Create a Square with sides of the given length
+	#  @param [Number]  size	    Bigness
+	#  @param [Number]  corner_radius   the radius to use for corner rounds. 0 and nil both disable rounding.
+	# @overload new(:origin, :size, :corner_radius)
+	#  Creates a {Square} with the given origin and size
+	#  @param [Point]   origin	    The lower-left corner
+	#  @param [Number]  size	    Bigness
+	#  @param [Number]  corner_radius   the radius to use for corner rounds. 0 and nil both disable rounding.
+	#  @return [CenteredSquare]
+	def square(size=nil, corner_radius:nil, **options)
+	    options[:size] = size if size
+	    raise ArgumentError, "A size argument is required" unless options[:size]
 
-	    if args.length == 1
-		options[:size] = args.shift
+	    if corner_radius and corner_radius.nonzero?
+		arc_radius = corner_radius
+		square = Geometry::Square.new(**options)
+
+		# Clip the arc radius to fit the square
+		arc_radius = self.size/2 if 2*arc_radius > square.size
+
+		multipliers = [[1,1], [1,-1], [-1,-1], [-1,1]]
+		arc_centers = square.points.zip(multipliers).map {|point, (a, b)| point + Point[a*arc_radius, b*arc_radius] }
+
+		# Normally we do things in clockwise order around here. That's why
+		#  self.points returns the points in clockwise order. This method
+		#  goes counterclockwise because Arc is always counterclockwise.
+		#  That makes it hard to create a clockwise Path that auto-joins
+		#  the segments properly.
+		point0, point3, point2, point1 = square.points
+		arc_centers[1], arc_centers[3] = arc_centers[3], arc_centers[1]
+		components = []
+		# The bottom edge, shortened by 2*corner_radius
+		bottom_left = Point[arc_centers.first.x, point0.y]
+		bottom_right = Point[arc_centers[1].x, point1.y]
+		components.push bottom_left
+		# Bottom-right arc
+		right_bottom = Point[point1.x, arc_centers[1].y]
+		components.push Geometry::Arc.new(center:arc_centers[1], start:bottom_right, end:right_bottom)
+		# Upper-right arc
+		right_top = Point[point2.x, arc_centers[2].y]
+		top_right = Point[arc_centers[2].x, point2.y]
+		components.push Geometry::Arc.new(center:arc_centers[2], start:right_top, end:top_right)
+		# Upper-left arc
+		top_left = Point[arc_centers.last.x, point3.y]
+		left_top = Point[point3.x, arc_centers.last.y]
+		components.push Geometry::Arc.new(center:arc_centers.last, start:top_left, end:left_top)
+		# Bottom-left arc
+		left_bottom = Point[point0.x, arc_centers.first.y]
+		components.push Geometry::Arc.new(center:arc_centers.first, start:left_bottom, end:bottom_left)
+		
+		push Geometry::Path.new(*components)
+	    else
+		push Geometry::Square.new(**options)
 	    end
-
-	    push Geometry::Square.new *args, options
 	end
 
 	# Create and add a {Triangle}

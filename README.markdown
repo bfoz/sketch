@@ -85,6 +85,17 @@ Sketch.new do
 end
 ```
 
+### Fillets (Bevels, Chamfers, Rounds)
+
+Rectangles and Squares can be given rounded corners using the `corner_radius` parameter. Support for chamfers (and bevels) is in progress.
+
+```ruby
+    Sketch.new do
+	rectangle from:[0,0], to:[10,10], corner_radius:1
+	square size:10, corner_radius:1
+    end
+```
+
 ### Repetition
 Do you ever get tired of making the same square over and over again?
 

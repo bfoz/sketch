@@ -166,6 +166,21 @@ describe Sketch::DSL do
     end
 
     describe 'rectangle' do
+	it 'must generate a Rectangle when corner rounding is disabled' do
+	    subject.rectangle from:[1,2], to:[3,4]
+	    subject.last.must_be_kind_of Geometry::Rectangle
+	    subject.last.points.must_equal [[1,2], [1,4], [3,4], [3,2]].map {|a| Point[a]}
+	end
+
+	it 'must generate a Path when corner rounding is enabled' do
+	    subject.rectangle from:[1,2], to:[6,7], corner_radius:1
+	    subject.last.must_equal Geometry::Path.new([2,2],
+						       Geometry::Arc.new(center:[5,3], start:[5,2], end:[6,3]),
+						       Geometry::Arc.new(center:[5,6], start:[6,6], end:[5,7]),
+						       Geometry::Arc.new(center:[2,6], start:[2,7], end:[1,6]),
+						       Geometry::Arc.new(center:[2,3], start:[1,3], end:[2,2]))
+	end
+
 	it 'must accept a size argument' do
 	    subject.rectangle size:[10,20]
 	    subject.last.must_be_kind_of Geometry::Rectangle
@@ -229,6 +244,35 @@ describe Sketch::DSL do
 	    subject.rectangle top:1, size:[10,20]
 	    subject.last.must_be_kind_of Geometry::Rectangle
 	    subject.last.points.must_equal [Point[0,-19], Point[0,1], Point[10,1], Point[10,-19]]
+	end
+    end
+
+    describe 'square' do
+	it 'must generate a Square when corner rounding is disabled' do
+	    subject.square origin:[0,0], size:5
+	    subject.last.must_be_kind_of Geometry::Square
+	    subject.last.points.must_equal [[0,0], [0,5], [5,5], [5,0]].map {|a| Point[a]}
+	end
+
+	it 'must generate a Path when corner rounding is enabled' do
+	    subject.square origin:[1,2], size:5, corner_radius:1
+	    subject.last.must_equal Geometry::Path.new([2,2],
+						       Geometry::Arc.new(center:[5,3], start:[5,2], end:[6,3]),
+						       Geometry::Arc.new(center:[5,6], start:[6,6], end:[5,7]),
+						       Geometry::Arc.new(center:[2,6], start:[2,7], end:[1,6]),
+						       Geometry::Arc.new(center:[2,3], start:[1,3], end:[2,2]))
+	end
+
+	it 'must allow a named size argument' do
+	    subject.square size:10
+	    subject.last.must_be_kind_of Geometry::Square
+	    subject.last.size.must_equal 10
+	end
+
+	it 'must allow a positional size argument' do
+	    subject.square 10
+	    subject.last.must_be_kind_of Geometry::Square
+	    subject.last.size.must_equal 10
 	end
     end
 
