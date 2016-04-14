@@ -19,7 +19,7 @@ class SketchFake
     end
 
     def build_layout(*args, &block)
-	Sketch::Layout.new *args, &block
+	Sketch::Layout.new(*args, &block)
     end
 
     def build_polygon(*args, &block)

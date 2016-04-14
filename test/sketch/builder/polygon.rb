@@ -30,7 +30,7 @@ describe Sketch do
 		move_y  tooth_size.y/2 - (y <= 0 ? 1 : 0)
 		move_x  1
 		move_y  tooth_size.y/2
-		move_x -1
+		move_x(-1)
 	    end
 	    repeat step:[2, 0], count:5 do |step|
 		forward step/2

@@ -99,13 +99,13 @@ class Sketch
     def minmax
 	return [nil, nil] unless @elements.size != 0
 
-	memo = @elements.map {|e| e.minmax }.reduce {|memo, e| [Point[[memo.first.x, e.first.x].min, [memo.first.y, e.first.y].min], Point[[memo.last.x, e.last.x].max, [memo.last.y, e.last.y].max]] }
+	memo = @elements.map(&:minmax).reduce {|m, e| [Point[[m.first.x, e.first.x].min, [m.first.y, e.first.y].min], Point[[m.last.x, e.last.x].max, [m.last.y, e.last.y].max]] }
 	if self.transformation
 	    if self.transformation.has_rotation?
 		# If the transformation has a rotation, convert the minmax into a bounding rectangle, rotate it, then find the new minmax
 		point1, point3 = Point[memo.last.x, memo.first.y], Point[memo.first.x, memo.last.y]
 		points = [memo.first, point1, memo.last, point3].map {|point| self.transformation.transform(point) }
-		points.reduce([points[0], points[2]]) {|memo, e| [Point[[memo.first.x, e.x].min, [memo.first.y, e.y].min], Point[[memo.last.x, e.x].max, [memo.last.y, e.y].max]] }
+		points.reduce([points[0], points[2]]) {|m, e| [Point[[m.first.x, e.x].min, [m.first.y, e.y].min], Point[[m.last.x, e.x].max, [m.last.y, e.y].max]] }
 	    else
 		memo.map {|point| self.transformation.transform(point) }
 	    end
@@ -157,5 +157,5 @@ class Sketch
 end
 
 def Sketch(&block)
-    Sketch::Builder.new &block
+    Sketch::Builder.new(&block)
 end

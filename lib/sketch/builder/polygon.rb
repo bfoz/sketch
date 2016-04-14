@@ -8,7 +8,7 @@ class Sketch
 	    # @return [Polygon] the {Polygon} resulting from evaluating the given block
 	    def evaluate(&block)
 		super
-		Sketch::Polygon.new *@elements
+		Sketch::Polygon.new(*@elements)
 	    end
 	end
     end

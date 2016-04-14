@@ -39,7 +39,7 @@ The same thing, but more succint:
 
 	    # Turn right by the given number of degrees
 	    def turn_right(angle)
-		turn_left -angle
+		turn_left(-angle)
 	    end
 
 	    # Draw a line by moving a given distance

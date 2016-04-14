@@ -35,7 +35,7 @@ class Sketch
 	    @spacing = options.delete(:spacing) || 0
 
 	    args += [options] if options and not options.empty?
-	    super *args
+	    super(*args)
 	end
 
 	# Any pushed element that doesn't have a transformation property will be wrapped in a {Group}.

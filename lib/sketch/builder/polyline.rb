@@ -22,7 +22,7 @@ class Sketch
 	    def evaluate(&block)
 		if block_given?
 		    @self_before_instance_eval = eval "self", block.binding
-		    self.instance_eval &block
+		    self.instance_eval(&block)
 		    @elements.map! {|point| point + @origin }
 		end
 		Sketch::Polyline.new(*@elements)

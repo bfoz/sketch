@@ -126,8 +126,8 @@ describe Sketch do
 	    end
 
 	    it "must have a min property that returns the lower left point of the bounding rectangle" do
-		subject.min.x.must_be_close_to -23.75
-		subject.min.y.must_be_close_to -3.25
+		subject.min.x.must_be_close_to(-23.75)
+		subject.min.y.must_be_close_to(-3.25)
 	    end
 	end
     end

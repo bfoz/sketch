@@ -29,7 +29,7 @@ class Sketch
 	def evaluate(&block)
 	    if block_given?
 		@self_before_instance_eval = eval "self", block.binding
-		self.instance_eval &block
+		self.instance_eval(&block)
 	    end
 	    @sketch
 	end
@@ -126,7 +126,7 @@ private
 	# Append a new object (with optional transformation) to the {Sketch}
 	# @return [Sketch]  the {Sketch} that was appended to
 	def push(*args)
-	    @sketch.push *args
+	    @sketch.push(*args)
 	end
 
 # @endgroup

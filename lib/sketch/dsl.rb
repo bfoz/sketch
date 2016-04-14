@@ -242,7 +242,7 @@ the following methods.
 	# Create and add a {Triangle}
 	# @param (see Triangle::new)
 	def triangle(*args)
-	    push Geometry::Triangle.new *args
+	    push Geometry::Triangle.new(*args)
 	end
 
     # @endgroup

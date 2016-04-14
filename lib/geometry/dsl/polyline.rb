@@ -99,13 +99,13 @@ that returns the last vertex.
 	    # Move the specified distance along the -Y axis
 	    # @param [Number] distance  The distance to move in the -Y direction
 	    def down(distance)
-		move_y -distance
+		move_y(-distance)
 	    end
 
 	    # Move the specified distance along the -X axis
 	    # @param [Number] distance  The distance to move in the -X direction
 	    def left(distance)
-		move_x -distance
+		move_x(-distance)
 	    end
 
 	    # Move the specified distance along the +X axis
