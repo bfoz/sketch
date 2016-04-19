@@ -149,7 +149,7 @@ describe Sketch::DSL do
 	subject.last.height.must_equal 10
 	subject.last.width.must_equal 10
 	subject.last.center.must_equal Point[0,0]
-	subject.last.points.must_equal [Point[-5,-5], Point[5,-5], Point[5,5], Point[-5,5]]
+	subject.last.points.must_equal [Point[-5,-5], Point[-5,5], Point[5,5], Point[5,-5]]
     end
 
     it 'must create a Square from an origin and a size' do
