@@ -1,8 +1,6 @@
 Sketching with Ruby
 ===================
 
-[![Build Status](https://travis-ci.org/bfoz/sketch.png)](https://travis-ci.org/bfoz/sketch)
-
 Classes and methods for programmatically creating, manipulating, and exporting 
 simple geometric drawings. This gem is primarily intended to support mechanical
 design generation, but it can also handle the doodling that you used to do in 
