@@ -133,7 +133,14 @@ describe Sketch do
     end
 
     describe "when the Sketch contains a group" do
-	subject { Sketch::Builder.new(Sketch.new).evaluate { translate [1,2] { circle [1,-2], 3; circle([-1,2], 3) } } }
+	subject do
+	    Sketch::Builder.new(Sketch.new).evaluate do
+		translate [1,2] do
+		    circle [1,-2], 3
+		    circle([-1,2], 3)
+		end
+	    end
+	end
 
 	it "must have a max property" do
 	    subject.max.must_equal Point[5,7]
