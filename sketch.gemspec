@@ -19,9 +19,9 @@ Gem::Specification.new do |s|
 
     s.required_ruby_version = '~> 2'
 
-    s.add_dependency 'geometry', '~> 6.4'
-
     spec = s
+    spec.add_dependency 'geometry', '~> 6.6'
+
     spec.add_development_dependency "bundler", "~> 2"
     spec.add_development_dependency "rake", "~> 13"
 end
