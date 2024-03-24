@@ -295,7 +295,7 @@ the following methods.
 		count = step.map {|s| s.zero? ? 1 : count}.to_a
 	    end
 
-	    start_point = center + Point[-step.x * (count.first-1)/2, -step.y * (count.last-1)/2]
+	    start_point = center + Point[-step.x * (count.first-1).to_r/2, -step.y * (count.last-1).to_r/2]
 
 	    if block_given?
 		count.last.times do |y|
