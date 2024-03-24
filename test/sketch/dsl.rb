@@ -18,12 +18,13 @@ class SketchFake
 	args
     end
 
-    def build_layout(*args, &block)
-	Sketch::Layout.new(*args, &block)
+    def build_layout(direction, alignment, spacing, *args, **options, &block)
+	options = options.reduce({direction:direction, alignment:alignment, spacing:spacing}, :merge)
+	Sketch::Layout.new(*args, **options, &block)
     end
 
-    def build_polygon(*args, &block)
-	args
+    def build_polygon(*args, **options, &block)
+	options
     end
 end
 
@@ -134,12 +135,12 @@ describe Sketch::DSL do
 
 	it 'must accept a block' do
 	    subject.polygon(){}
-	    subject.elements.last.must_equal [{}]
+	    subject.elements.last.must_equal({})
 	end
 
 	it 'must accept an origin and a block' do
 	    subject.polygon(origin:[1,2]) {}
-	    subject.elements.last.must_equal [{origin:[1,2]}]
+	    subject.elements.last.must_equal({origin:[1,2]})
 	end
     end
 

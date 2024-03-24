@@ -76,10 +76,7 @@ module SketchMixin
     # @param element	[Geometry]	the {Geometry} element to append
     # @param args	[Array]		optional transformation parameters
     # @return [Sketch]
-    def push(element, *args)
-	options, args = args.partition {|a| a.is_a? Hash}
-	options = options.reduce({}, :merge)
-
+    def push(element, *args, **options)
 	if options and (options.size != 0) and (element.respond_to? :transformation)
 	    element.transformation = Geometry::Transformation.new options
 	end

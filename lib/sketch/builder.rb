@@ -96,8 +96,8 @@ private
 	end
 
 	# Create a {Group} with an optional transformation
-	def build_group(*args, &block)
-	    self.class.new(Group.new(*args)).evaluate(&block)
+	def build_group(*args, **options, &block)
+	    self.class.new(Group.new(*args, **options)).evaluate(&block)
 	end
 
 	# Create a {Layout}
@@ -105,11 +105,9 @@ private
 	# @option options [Symbol] alignment    :top, :bottom, :left, or :right
 	# @option options [Number] spacing  The spacing between each element
 	# @return [Group]
-	def build_layout(direction, alignment, spacing, *args, &block)
-	    options, args = args.partition {|a| a.is_a? Hash}
+	def build_layout(direction, alignment, spacing, *args, **options, &block)
 	    options = options.reduce({direction:direction, alignment:alignment, spacing:spacing}, :merge)
-	    args += [options]
-	    self.class.new(Layout.new(*args)).evaluate(&block)
+	    self.class.new(Layout.new(*args, **options)).evaluate(&block)
 	end
 
 	# Use the given block to build a {Polyline}
@@ -119,14 +117,14 @@ private
 
 	# Build a {Polygon} from a block
 	# @return [Polygon]
-	def build_polygon(**options, &block)
-	    Builder::Polygon.new(**options).evaluate(&block)
+	def build_polygon(*args, **options, &block)
+	    Builder::Polygon.new(*args, **options).evaluate(&block)
 	end
 
 	# Append a new object (with optional transformation) to the {Sketch}
 	# @return [Sketch]  the {Sketch} that was appended to
-	def push(*args)
-	    @sketch.push(*args)
+	def push(...)
+	    @sketch.push(...)
 	end
 
 # @endgroup

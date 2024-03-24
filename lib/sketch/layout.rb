@@ -26,33 +26,29 @@ class Sketch
 	# @param direction  [Symbol]	the layout direction
 	# @param alignment  [Symbol]	the alignment to use in the direction perpendicular to the layout direction
 	# @param spacing    [Number]	the space to leave between each element
-	def initialize(*args)
-	    options, args = args.partition {|a| a.is_a? Hash}
-	    options = options.reduce({}, :merge)
-
+	def initialize(*args, **options, &block)
 	    @direction = options.delete(:direction) || :horizontal
 	    @alignment = options.delete(:align) || options.delete(:alignment) || ((@direction == :horizontal) ? :bottom : :left)
 	    @spacing = options.delete(:spacing) || 0
 
-	    args += [options] if options and not options.empty?
-	    super(*args)
+	    super(*args, **options, &block)
 	end
 
 	# Any pushed element that doesn't have a transformation property will be wrapped in a {Group}.
 	# @param element [Geometry] the geometry element to append
 	# @return [Layout]
-	def push(element, *args)
+	def push(element, ...)
 	    max = last ? last.max : Point.zero
 
 	    offset = make_offset(element, element.min, max)
 
 	    if offset == Point.zero
-		super element, *args
+		super(element, ...)
 	    else
 		if element.respond_to?(:transformation=)
-		    super element, *args
+		    super(element, ...)
 		else
-		    super Group.new.push element, *args
+		    super(Group.new.push(element, ...))
 		end
 
 		last.transformation = Geometry::Transformation.new(origin:offset) + last.transformation

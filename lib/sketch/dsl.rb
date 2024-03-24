@@ -80,9 +80,9 @@ the following methods.
 
 	# Create a {RegularPolygon} with 6 sides
 	# @return [RegularPolygon]
-	def hexagon(options={})
+	def hexagon(**options)
 	    options[:sides] = 6
-	    Geometry::RegularPolygon.new(options).tap {|a| push a }
+	    Geometry::RegularPolygon.new(**options).tap {|a| push a }
 	end
 
 	# Create a Line using any arguments that work for {Geometry::Line}
@@ -99,11 +99,11 @@ the following methods.
 	# Create a Polygon with the given vertices, or using a block.
 	# See {PolygonBuilder}
 	# @option origin [Point]    everything inside the block argument is relative to this {Point}
-	def polygon(*args, **options, &block)
+	def polygon(...)
 	    if block_given?
-		push build_polygon(**options, &block)
+		push build_polygon(...)
 	    else
-		push Sketch::Polygon.new(*args)
+		push Sketch::Polygon.new(...)
 	    end
 	    last
 	end
@@ -248,8 +248,8 @@ the following methods.
     # @endgroup
 
 	# Create a {Group} with an optional transformation
-	def group(*args, &block)
-	    push build_group(*args, &block)
+	def group(...)
+	    push build_group(...)
 	end
 
 	# Create a {Group} using the given translation
@@ -321,10 +321,7 @@ the following methods.
 	# @option options [Symbol] align    :top, :bottom, :left, or :right
 	# @option options [Number] spacing  The spacing between each element
 	# @return [Group]
-	def layout(*args, &block)
-	    options, _ = args.partition {|a| a.is_a? Hash}
-	    options = options.reduce({}, :merge)
-
+	def layout(*args, **options, &block)
 	    alignment = options.delete(:align) || options.delete(:alignment)
 	    direction = options.delete(:direction) || :horizontal
 	    spacing = options.delete(:spacing) || 0
@@ -338,7 +335,7 @@ the following methods.
 		end
 	    end
 
-	    push build_layout(direction, alignment, spacing, *args, &block)
+	    push build_layout(direction, alignment, spacing, *args, **options, &block)
 	end
 
 	def horizontal(*args, &block)
@@ -349,12 +346,9 @@ the following methods.
 	    layout options, &block
 	end
 
-	def vertical(*args, &block)
-	    options, _ = args.partition {|a| a.is_a? Hash}
-	    options = options.reduce({}, :merge)
+	def vertical(*args, **options, &block)
 	    options[:direction] = :vertical
-
-	    layout options, &block
+	    layout(*args, **options, &block)
 	end
     # @endgroup
     end
